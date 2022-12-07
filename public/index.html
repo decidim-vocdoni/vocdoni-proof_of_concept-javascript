@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vocdoni Proof of Concept in Pure Javascript</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <link rel="stylesheet" href="./css/foundation.min.css" />
+    <link rel="stylesheet" href="./css/foundation-prototype.min.css" />
+  </head>
+  <body>
+    <div class="grid-container margin-3">
+      <div class="grid-x align-center">
+        <div class="cell medium-8 callout">
+          <h1 class="h3">Vocdoni Proof of Concept on (Purish) JavaScript</h1>
+          <p>This project is a Demo on how to use the Vocdoni SDK in a simple way, for integrating with Decidim.<p>
+          <p>For making this work, you'll need the <a href="https://metamask.io/">MetaMask browser addon</a>.</p>
+
+          <ol>
+            <li>Download and install the MetaMask addon for your browser or Operating System. </li>
+            <li>Set up a wallet</li>
+            <li>Once its set up, change the Network to test network. On the Firefox addon, this is done by:</li>
+            <ol>
+              <li>clicking "Ethereum Mainnet" Netwkorks in the top right</li>
+              <li>clicking on "Show/hide test networks"</li>
+              <li>clicking on "Show test newtworks" -> "ON"</li>
+            </ol>
+          </ol>
+          <p>Open your web development tools to see debug messages.<p>
+
+          <div class="hide callout alert js-metamask-not-installed-message">You don't have MetaMask installed. Please install it and refresh this page.</div>
+          <div class="hide callout alert js-metamask-no-permissions-message">You didn't give permissions to the MetaMask account. Please log in on MetaMask, sign in in this page, refresh, and start again.</div>
+
+          <button class="hide button js-signin-metamask-button">Sign in with MetaMask</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/bundle.js"></script>
+  </body>
+</html>
