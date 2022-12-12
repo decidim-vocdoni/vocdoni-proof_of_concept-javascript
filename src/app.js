@@ -8,7 +8,6 @@ const metaMaskNoPermissionsMessage = document.querySelector(".js-metamask-no-per
 
 /*
  * Check if there's any wallet available
- * @public
  * @returns {boolean} true if it's installed
  */
 const isWalletInstalled = () => {
@@ -35,14 +34,11 @@ const isWalletInstalled = () => {
 }
 
 /*
- * Sets up the Wallet. This is only for demo purposes, using the
- * window.ethereum API from the MetaMask addon. On the real project we should
- * use something like WalletConnect, so we don't depend on a single Wallet provider
- * @returns {account|void} The account instance or nothing if it doesn't have permission
+ * Get the wallet from the window.ethereum API (MetaMask).
+ * TODO: we should add support to WalletConnect
+ * @returns {Promise<account>|void} A promise to the account instance or nothing if it doesn't have permission
  */
-// TODO: delete
-const setupWallet = async () => {
-
+const getWallet = async () => {
   /*
    * Show the error message that the MetaMask Wallet has no permissions
    * @returns {void}
@@ -55,34 +51,21 @@ const setupWallet = async () => {
   console.log("Asking permission to wallet");
 
   return new Promise((resolve) => {
-    window.ethereum.request({ method: "eth_requestAccounts" }).
-      then((accounts) => {
-        const account = accounts[0];
-        console.log("ACCOUNT => ", account);
-        resolve(account);
-      }).
-      catch((exception) => {
-        if (exception.code === -32002 || exception.code === 4001) {
-          console.log("No permissions! Show the error message");
-          showNoPermissionsMessage();
-        } else {
-          console.log("No permissions! Invalid exception => ", exception);
-        }
-      });
-  });
-}
-
-// TODO: document
-// TODO: migrate error handling from setupWallet
-const getWallet = async () => {
-  return new Promise((resolve) => {
     const provider = new ethers.providers.Web3Provider(
       window.ethereum,
       "any"
     );
-    provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-    resolve(signer);
+    provider.send("eth_requestAccounts", []).then(() => {
+      const signer = provider.getSigner();
+      resolve(signer);
+    }).catch((exception) => {
+      if (exception.code === -32002 || exception.code === 4001) {
+        console.log("No permissions! Show the error message");
+        showNoPermissionsMessage();
+      } else {
+        console.log("No permissions! Invalid exception => ", exception);
+      }
+    });
   });
 }
 
