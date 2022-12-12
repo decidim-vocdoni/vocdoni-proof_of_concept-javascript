@@ -3,6 +3,7 @@ import { Election, EnvironmentInitialitzationOptions, PlainCensus, VocdoniSDKCli
 import { ethers } from "ethers";
 
 const ethereumButton = document.querySelector(".js-signin-metamask-button");
+const createElectionButton = document.querySelector(".js-create-election-button");
 const metaMaskNotInstalledMessage = document.querySelector(".js-metamask-not-installed-message");
 const metaMaskNoPermissionsMessage = document.querySelector(".js-metamask-no-permissions-message");
 
@@ -80,7 +81,7 @@ const setupAccount = async (client) => {
 
 /* Sets up the census. This is only for demo purposes.
  * We should study the different kind of Censuses to see which apply to our usecase
- * @param {Object} creator
+ * @param {Object} creator The Wallet object instance from ethers
  * @returns {} census
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/tree/main/src/types/census|GitHub}
  * @see {@link https://docs.vocdoni.io/architecture/census/census-overview.html|Documentation}
@@ -161,6 +162,18 @@ const main = async () => {
   console.log("Creating account...");
   setupAccount(client);
 
+  console.log("Let's change the buttons");
+  ethereumButton.classList.toggle("hide");
+  createElectionButton.classList.toggle("hide");
+  createElectionButton.addEventListener("click", () => createDemoElection(client, creator))
+}
+
+/* 
+ * Create the demo election in Vocdoni API
+ * @param {VocdoniSDKClient} client An instance of the client with the account created
+ * @param {Object} creator The Wallet object instance from ethers
+ */
+const createDemoElection = async (client, creator) => {
   console.log("Initializing the census...");
   const census = await setupCensus(creator);
   console.log("CENSUS => ", census);
