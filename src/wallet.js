@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 
 const metaMaskNotInstalledMessage = document.querySelector(".js-metamask-not-installed-message");
 const metaMaskNoPermissionsMessage = document.querySelector(".js-metamask-no-permissions-message");
+const ethereumButton = document.querySelector(".js-signin-metamask-button");
 
 /*
  * Check if there's any wallet available
@@ -14,6 +15,10 @@ export const isWalletInstalled = () => {
    * @returns {void}
    */
   const showNotInstalledMessage = () => {
+    if (metaMaskNotInstalledMessage == null) {
+      return;
+    }
+
     metaMaskNotInstalledMessage.classList.toggle("hide");
   }
 
