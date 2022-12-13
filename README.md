@@ -11,15 +11,11 @@ git clone https://github.com/andreslucena/vocdoni-proof_of_concept-javascript
 ```shell
 npm install
 ```
-3. Run the compiler
-```shell
-npm run watch
-```
-4. On another terminal, run the webserver
+3. Run the webserver
 ```shell
 npm run start
 ```
-5. In a browser, open http://localhost:8080/
-6. Follow the instructions in the website
+4. In a browser, open http://localhost:8080/
+5. Follow the instructions in the website
 
 [metamask-download]: https://metamask.io/download/
