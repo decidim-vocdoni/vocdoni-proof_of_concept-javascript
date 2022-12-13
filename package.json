@@ -16,6 +16,7 @@
     "transform": {
       "\\.js$": "babel-jest"
     },
+    "transformIgnorePatterns": ["/node_modules/(?!@vocdoni/sdk)"],
     "testEnvironment": "jsdom",
     "testRegex": "\\.(test|spec)\\.js$"
   },
