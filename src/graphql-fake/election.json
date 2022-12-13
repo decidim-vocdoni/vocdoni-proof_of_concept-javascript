@@ -1,0 +1,126 @@
+{
+  "data": {
+    "component": {
+      "id": "22",
+      "name": {
+        "translation": "Vocdoni",
+        "translations": [
+          {
+            "text": "Vocdoni",
+            "locale": "ca"
+          },
+          {
+            "text": "Vocdoni",
+            "locale": "en"
+          },
+          {
+            "text": "Vocdoni",
+            "locale": "es"
+          }
+        ]
+      },
+      "elections": {
+        "nodes": [
+          {
+            "status": null,
+            "id": "2",
+            "title": {
+              "translations": [
+                {
+                  "text": "Aquest es el nom de l'elecció",
+                  "locale": "ca"
+                },
+                {
+                  "text": "This is the name of the election",
+                  "locale": "en"
+                },
+                {
+                  "text": "Este es el nombre de la elección",
+                  "locale": "es"
+                }
+              ]
+            },
+            "description": {
+              "translations": [
+                {
+                  "text": "<p>Aquesta es la descripció de l'elecció</p>",
+                  "locale": "ca"
+                },
+                {
+                  "text": "<p>This is the description of the election</p>",
+                  "locale": "en"
+                },
+                {
+                  "text": "<p>Esta es la descripción de la elección</p>",
+                  "locale": "es"
+                }
+              ]
+            },
+            "attachments": [],
+            "streamUri": "",
+            "startTime": "2022-12-08T00:00:00+00:00",
+            "endTime": "2022-12-09T00:00:00+00:00",
+            "questions": [
+              {
+                "title": {
+                  "translations": [
+                    {
+                      "text": "Quina es la teva banda britanica favorita?",
+                      "locale": "ca"
+                    },
+                    {
+                      "text": "What is your favorite british band?",
+                      "locale": "en"
+                    },
+                    {
+                      "text": "¿Cuál es tu banda británica favorita?",
+                      "locale": "es"
+                    }
+                  ]
+                },
+                "answers": [
+                  {
+                    "title": {
+                      "translations": [
+                        {
+                          "text": "The Beatles",
+                          "locale": "ca"
+                        },
+                        {
+                          "text": "The Beatles",
+                          "locale": "en"
+                        },
+                        {
+                          "text": "The Beatles",
+                          "locale": "es"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "title": {
+                      "translations": [
+                        {
+                          "text": "The Rolling Stones",
+                          "locale": "ca"
+                        },
+                        {
+                          "text": "The Rolling Stones",
+                          "locale": "en"
+                        },
+                        {
+                          "text": "The Rolling Stones",
+                          "locale": "es"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

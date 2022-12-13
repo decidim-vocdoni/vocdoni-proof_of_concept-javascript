@@ -7,6 +7,7 @@
     "build": "browserify -p esmify ./src/app.js -o ./public/js/bundle.js",
     "lint": "eslint ./src/",
     "start": "reload -d ./public/",
+    "start-graphql-fake": "node src/graphql-fake/app.js",
     "test": "jest",
     "watch": "watchify -p esmify ./src/app.js -o ./public/js/bundle.js"
   },
