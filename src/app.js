@@ -1,7 +1,7 @@
 import { EnvironmentInitialitzationOptions, VocdoniSDKClient } from "@vocdoni/sdk"
 
 import { isWalletInstalled, getWallet } from "./wallet"  
-import { setupAccount, getAccountInfo, showAccountInfo } from "./account"
+import { showAccountInfo } from "./account"
 import { setupCensus, setupElection, createElection } from "./election"
 
 const ethereumButton = document.querySelector(".js-signin-metamask-button");
@@ -27,9 +27,10 @@ const main = async () => {
   console.log("CLIENT => ", client);
 
   console.log("Creating account...");
-  setupAccount(client);
-  const accountInformation = await getAccountInfo(client);
-  console.log("ACCOUNT INFO => ", accountInformation);
+  await client.createAccount();
+  console.log("Getting the account information...");
+  const accountInformation = await client.fetchAccountInfo();
+  console.log("ACCOUNT INFORMATION => ", accountInformation);
   showAccountInfo(accountInformation);
 
   console.log("Let's change the buttons");
