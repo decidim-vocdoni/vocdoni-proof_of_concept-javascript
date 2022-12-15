@@ -15,7 +15,7 @@ export const isWalletInstalled = () => {
    * @returns {void}
    */
   const showNotInstalledMessage = () => {
-    if (metaMaskNotInstalledMessage == null) {
+    if (metaMaskNotInstalledMessage === null) {
       return;
     }
 
@@ -41,13 +41,28 @@ export const isWalletInstalled = () => {
  * @returns {Promise<account>|void} A promise to the account instance or nothing if it doesn't have permission
  */
 export const getWallet = async () => {
+
   /*
-   * Show the error message that the MetaMask Wallet has no permissions
+   * Show the error message when the MetaMask Wallet has no permissions
    * @returns {void}
    */
   const showNoPermissionsMessage = () => {
     metaMaskNoPermissionsMessage.classList.toggle("hide");
     ethereumButton.classList.toggle("hide");
+  }
+
+  /*
+   * Handle the exception from ethers
+   * @param {Exception} exception The exception object
+   * @returns {void}
+   */
+  const handleException = (exception) => {
+    if (exception.code === -32002 || exception.code === 4001) {
+      console.log("No permissions! Show the error message");
+      showNoPermissionsMessage();
+    } else {
+      console.log("No permissions! Invalid exception => ", exception);
+    }
   }
 
   console.log("Asking permission to wallet");
@@ -60,15 +75,7 @@ export const getWallet = async () => {
     provider.send("eth_requestAccounts", []).then(() => {
       const signer = provider.getSigner();
       resolve(signer);
-    }).catch((exception) => {
-      if (exception.code === -32002 || exception.code === 4001) {
-        console.log("No permissions! Show the error message");
-        showNoPermissionsMessage();
-      } else {
-        console.log("No permissions! Invalid exception => ", exception);
-      }
-    });
+    }).catch((exception) => handleException(exception));
   });
 }
-
 
