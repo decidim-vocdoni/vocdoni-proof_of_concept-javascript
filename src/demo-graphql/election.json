@@ -78,6 +78,22 @@
                     }
                   ]
                 },
+                "description": {
+                  "translations": [
+                    {
+                      "text": "Quina es la teva banda britanica favorita?",
+                      "locale": "ca"
+                    },
+                    {
+                      "text": "What is your favorite british band?",
+                      "locale": "en"
+                    },
+                    {
+                      "text": "¿Cuál es tu banda británica favorita?",
+                      "locale": "es"
+                    }
+                  ]
+                },
                 "answers": [
                   {
                     "title": {
@@ -95,7 +111,8 @@
                           "locale": "es"
                         }
                       ]
-                    }
+                    },
+                    "value": 0
                   },
                   {
                     "title": {
@@ -113,7 +130,8 @@
                           "locale": "es"
                         }
                       ]
-                    }
+                    },
+                    "value": 1
                   }
                 ]
               }
