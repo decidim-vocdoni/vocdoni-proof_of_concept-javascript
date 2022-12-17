@@ -2,10 +2,11 @@ import { EnvironmentInitialitzationOptions, VocdoniSDKClient } from "@vocdoni/sd
 
 import { isWalletInstalled, getWallet } from "./wallet"  
 import { showAccountInfo } from "./account"
-import { setupCensus, setupElection, createElection } from "./election"
+import { setupCensus, setupElection } from "./election"
 
 const ethereumButton = document.querySelector(".js-signin-metamask-button");
 const createElectionButton = document.querySelector(".js-create-election-button");
+const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
 
 /*
  * Calls the different methods for setting up an election with the Vocdoni API
@@ -36,7 +37,10 @@ const main = async () => {
   console.log("Let's change the buttons");
   ethereumButton.classList.toggle("hide");
   createElectionButton.classList.toggle("hide");
-  createElectionButton.addEventListener("click", () => createDemoElection(client, creator))
+  createElectionButton.addEventListener("click", () => {
+    createElectionButton.disabled = true;
+    createDemoElection(client, creator)
+  })
 }
 
 /* 
@@ -50,11 +54,11 @@ const createDemoElection = async (client, creator) => {
   console.log("CENSUS => ", census);
 
   console.log("Initializing the election...");
-  const election = setupElection(census);
+  const election = await setupElection(census);
   console.log("ELECTION => ", election);
 
   console.log("Creating the election in Vocdoni API...");
-  const electionId = await createElection(client, election); 
+  const electionId = await client.createElection(election)
   console.log("Election created!");
   console.log("ELECTION ID => ", electionId);
 };

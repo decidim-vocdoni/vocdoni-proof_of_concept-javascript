@@ -46,19 +46,3 @@ export const setupElection = (census) => {
 
   return election;
 }
-
-/* 
- * Create the Election in Vocdoni API
- * @param {VocdoniSDKClient} client An instance of the client with the account created
- * @param {Election} election An election instance already configured
- * @returns {Promise<electionId>} A promise to the electionId in the Vocodni API.
- */
-export const createElection = (client, election) => {
-  return new Promise((resolve) => {
-    const electionId = client.createElection(election)
-    client.setElectionId(electionId);
-    resolve(electionId);
-  });
-}
-
-
