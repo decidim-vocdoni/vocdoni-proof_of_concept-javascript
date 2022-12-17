@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Voter booth | Vocdoni Proof of Concept in Pure Javascript</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <link rel="stylesheet" href="./css/foundation.min.css" />
+    <link rel="stylesheet" href="./css/foundation-prototype.min.css" />
+  </head>
+  <body>
+    <div class="grid-container margin-3">
+      <div class="grid-x align-center">
+        <div class="cell medium-12 callout">
+          <h1 class="h3">Voter Booth | Vocdoni Proof of Concept on (Purish) JavaScript</h1>
+          <p>This project is a Demo on how to use the Vocdoni SDK in a simple way, for integrating with Decidim.<p>
+
+          <form class="js-vote-mnemonic-form">
+            <input type="text" name="mnemonic" required="true" placeholder="Add a mnemonic wallet to vote" />
+            <input type="text" name="election-id" required="true" placeholder="Add the election ID" />
+            <button type="submit" class="button">Set the vote information</button>
+          </form>
+
+          <form class="hide js-vote-form">
+            <fieldset>
+              <h2 class="h4">What is your favorite british band?</h2>
+              <legend>Select your answer:</legend>
+
+              <div>
+                <input type="radio" id="beatles" name="band" value="0">
+                <label for="beatles">The Beatles</label>
+              </div>
+
+              <div>
+                <input type="radio" id="rolling" name="band" value="1">
+                <label for="rolling">The Rolling Stones</label>
+              </div>
+            </fieldset>
+
+          <div class="hide callout alert js-voting-error">
+            <h3 class="h5">There was an error with your vote</h3>
+            <p>Contact an administrator at <a href="mailto:support@example.org">support@example.org</a>.</p>
+            <p>The full error message is: <i></i>.</p>
+          </div>
+
+            <button class="button" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/bundle.js"></script>
+  </body>
+</html>

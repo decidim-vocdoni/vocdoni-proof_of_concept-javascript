@@ -3,10 +3,14 @@ import { EnvironmentInitialitzationOptions, VocdoniSDKClient } from "@vocdoni/sd
 import { isWalletInstalled, getWallet } from "./wallet"  
 import { showAccountInfo } from "./account"
 import { setupCensus, setupElection } from "./election"
+import { submitVote } from "./voter"
 
 const ethereumButton = document.querySelector(".js-signin-metamask-button");
 const createElectionButton = document.querySelector(".js-create-election-button");
 const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
+
+const voteMnemonicForm = document.querySelector(".js-vote-mnemonic-form");
+const voteForm = document.querySelector(".js-vote-form");
 
 /*
  * Calls the different methods for setting up an election with the Vocdoni API
@@ -71,6 +75,42 @@ document.addEventListener("DOMContentLoaded", () => {
     ethereumButton.classList.toggle("hide");
     ethereumButton.addEventListener("click", () => main())
   };
+
+  // For voting form
+  if (voteMnemonicForm !== null) {
+    console.log("Voter wallet form loaded");
+    const voteMnemonicInput = voteMnemonicForm.querySelector("input[name=mnemonic]");
+    const electionIdInput = voteMnemonicForm.querySelector("input[name=election-id]");
+
+    voteMnemonicForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (voteMnemonicInput.value.split(" ").length === 12) {
+        voteForm.classList.toggle("hide");
+        voteMnemonicInput.disabled = true;
+        electionIdInput.disabled = true;
+        voteMnemonicForm.querySelector("button").disabled = true;
+      } else {
+        console.log("Check that the wallet mnemonic phrase is correct and send it again");
+      }
+    });
+
+    if (voteForm !== null) {
+      console.log("Voter form loaded");
+      voteForm.addEventListener("submit", event => {
+        event.preventDefault();
+        voteForm.querySelector("button").disabled = true;
+        let voteValue = [];
+        voteValue.push(voteForm.querySelector("input[type=radio]:checked").value);
+
+        console.log("Submiting vote with:");
+        console.log("- ELECTION ID => ", electionIdInput.value);
+        console.log("- WALLET => ", voteMnemonicInput.value);
+        console.log("- VALUE => ", voteValue);
+        submitVote(electionIdInput.value, voteMnemonicInput.value, voteValue);
+      });
+    }
+  }
 });
 
 // TODO: listen for the network change event to reload the page
