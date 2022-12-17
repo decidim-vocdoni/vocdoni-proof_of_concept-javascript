@@ -1,4 +1,7 @@
+import { ethers } from "ethers";
 import { Election, PlainCensus } from "@vocdoni/sdk"
+
+const TEST_CENSUS = 5;
 
 /* Sets up the census. This is only for demo purposes.
  * We should study the different kind of Censuses to see which apply to our usecase
@@ -8,9 +11,25 @@ import { Election, PlainCensus } from "@vocdoni/sdk"
  * @see {@link https://docs.vocdoni.io/architecture/census/census-overview.html|Documentation}
  */
 export const setupCensus = async (creator) => {
+  const showDemoCensus = () => {
+    const divDemoCensus = document.querySelector(".js-demo-census");
+    divDemoCensus.classList.toggle("hide")
+    return divDemoCensus.querySelector("textarea");
+  }
+
   const census = new PlainCensus();
   census.add(await creator.getAddress());
-  census.add(await ethers.Wallet.createRandom().getAddress());
+  const textareaDemoCensus = showDemoCensus();
+  textareaDemoCensus.rows = TEST_CENSUS;
+  textareaDemoCensus.value = "";
+  for (let i = 0; i < TEST_CENSUS; i++) {
+    const wallet = ethers.Wallet.createRandom({locale: "en"});
+    const mnemonic = wallet.mnemonic.phrase;
+    console.log("VOTER ", i, " =>", mnemonic);
+    textareaDemoCensus.value += `${mnemonic}\n`;
+    census.add(await wallet.getAddress());  
+  };
+
   return census;
 }
 
