@@ -47,9 +47,9 @@
               <li>clicking on "Show test networks" -> "ON"</li>
             </ol>
           </ol>
-          <p>Open your web development tools to see debug messages.<p>
 
           <dl class="hide js-account-information">
+            <h2 class="h4">Account information</h2>
             <dt><abbr title="The address of the account">Address</abbr></dt>
             <dd class="margin-left-3" data-account="address"></dd>
             <dt><abbr title="The current balance in tokens">Balance</abbr></dt>
@@ -68,7 +68,11 @@
 
           <div class="hide callout alert js-metamask-not-installed-message">You don't have MetaMask installed. Please install it and refresh this page.</div>
           <div class="hide callout alert js-metamask-no-permissions-message">You didn't give permissions to the MetaMask account. Please log in on MetaMask, sign in in this page, refresh, and start again.</div>
-          <div class="hide callout success js-vocdoni-election-created">The election was successfully created. You can watch it out at the <a href="#" target="_blank">Vocdoni Explorer</a></div>
+          <div class="hide callout success js-vocdoni-election-created">
+            <h2 class="h4">The election was successfully created</h2>
+            <p>You can watch it out at the <a class="js-vocdoni-election-created-link" href="#" target="_blank">Vocdoni Explorer</a>.</p>
+            <p>Now you can go to the <a href="/voter.html">Voter booth</a>.</p>
+          </div>
 
           <button class="hide button js-signin-metamask-button">Sign in with MetaMask</button>
           <button class="hide button js-create-election-button">Create election in Vocdoni API</button>

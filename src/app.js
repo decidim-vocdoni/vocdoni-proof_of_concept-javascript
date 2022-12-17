@@ -8,6 +8,7 @@ import { submitVote } from "./voter"
 const ethereumButton = document.querySelector(".js-signin-metamask-button");
 const createElectionButton = document.querySelector(".js-create-election-button");
 const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
+const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
 
 const voteMnemonicForm = document.querySelector(".js-vote-mnemonic-form");
 const voteForm = document.querySelector(".js-vote-form");
@@ -65,12 +66,16 @@ const createDemoElection = async (client, creator) => {
   const electionId = await client.createElection(election)
   console.log("Election created!");
   console.log("ELECTION ID => ", electionId);
+  electionCreatedMessage.classList.toggle("hide");
+  electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Ready to start the Proof of Concept. DOMContentLoaded event.");
 
-  if (isWalletInstalled()) {
+  // For election set-up page
+  if (ethereumButton !== null && isWalletInstalled()) {
+    console.log("Set-up form loaded");
     console.log("Let's show the button");
     ethereumButton.classList.toggle("hide");
     ethereumButton.addEventListener("click", () => main())
