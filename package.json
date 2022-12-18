@@ -4,13 +4,15 @@
   "description": "A Proof of Concept of using the Vocdoni SDK in a (purish) JavaScript project.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify -p esmify ./src/app.js -o ./public/js/bundle.js",
+    "build-admin": "browserify -p esmify ./src/entrypoints/vocdoni_admin.js -o ./public/js/vocdoni_admin-bundle.js",
+    "build-voter": "browserify -p esmify ./src/entrypoints/vocdoni_voter.js -o ./public/js/vocdoni_voter-bundle.js",
     "lint": "eslint ./src/",
-    "start": "concurrently \"npm:start-demo-app\" \"npm:start-demo-graphql\" \"npm:watch\"", 
+    "start": "concurrently \"npm:start-demo-app\" \"npm:start-demo-graphql\" \"npm:watch-admin\" \"npm:watch-voter\"",
     "start-demo-app": "reload -d ./public/",
     "start-demo-graphql": "node src/demo-graphql/app.js",
     "test": "jest",
-    "watch": "watchify -p esmify ./src/app.js -o ./public/js/bundle.js"
+    "watch-admin": "watchify -p esmify ./src/entrypoints/vocdoni_admin.js -o ./public/js/vocdoni_admin-bundle.js",
+    "watch-voter": "watchify -p esmify ./src/entrypoints/vocdoni_voter.js -o ./public/js/vocdoni_voter-bundle.js"
   },
   "author": "Andrés Pereira de Lucena",
   "license": "AGPL3",
