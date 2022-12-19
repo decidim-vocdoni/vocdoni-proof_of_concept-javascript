@@ -1,3 +1,6 @@
+import "../voter/setup-preview"
+import "../voter/new-vote"
+
 import { submitVote } from "../voter"
 
 const voteMnemonicForm = document.querySelector(".js-vote-mnemonic-form");

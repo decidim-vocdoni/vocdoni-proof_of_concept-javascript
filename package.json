@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-admin-html": "ejs views/pages/admin.ejs --output-file public/admin.html",
+    "build-voter-html": "ejs views/pages/voter.ejs --output-file public/voter.html",
     "build-admin-js": "browserify -p esmify ./src/entrypoints/vocdoni_admin.js -o ./public/js/vocdoni_admin-bundle.js",
     "build-voter-js": "browserify -p esmify ./src/entrypoints/vocdoni_voter.js -o ./public/js/vocdoni_voter-bundle.js",
     "lint": "eslint ./src/",
