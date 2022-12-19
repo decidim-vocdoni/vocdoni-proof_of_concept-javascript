@@ -1,82 +1,41 @@
-import { EnvironmentInitialitzationOptions, VocdoniSDKClient } from "@vocdoni/sdk"
-import { isWalletInstalled, getWallet } from "../wallet"  
-import { showAccountInfo } from "../account"
-import { setupCensus, setupElection } from "../election"
-
-const ethereumButton = document.querySelector(".js-signin-metamask-button");
-const createElectionButton = document.querySelector(".js-create-election-button");
-const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
-const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
-
-/*
- * Calls the different methods for setting up an election with the Vocdoni API
- * using the Vocdoni SDK. Based on the TypeScript example provided in the GitHub repository.
- * @see {@link https://developer.vocdoni.io|Documentation}
- * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
- */
-const main = async () => {
-  console.log("Starting the demo!");
-
-  console.log("Initializing the wallet...");
-  const creator = await getWallet();
-  console.log("CREATOR => ", creator);
-
-  const client = new VocdoniSDKClient({
-    env: EnvironmentInitialitzationOptions.DEV,
-    wallet: creator
-  })
-  console.log("CLIENT => ", client);
-
-  console.log("Creating account...");
-  await client.createAccount();
-  console.log("Getting the account information...");
-  const accountInformation = await client.fetchAccountInfo();
-  console.log("ACCOUNT INFORMATION => ", accountInformation);
-  showAccountInfo(accountInformation);
-
-  console.log("Let's change the buttons");
-  ethereumButton.classList.toggle("hide");
-  createElectionButton.classList.toggle("hide");
-  createElectionButton.addEventListener("click", () => {
-    createElectionButton.disabled = true;
-    createDemoElection(client, creator)
-  })
-}
-
-/* 
- * Create the demo election in Vocdoni API
- * @param {VocdoniSDKClient} client An instance of the client with the account created
- * @param {Object} creator The Wallet object instance from ethers
- */
-const createDemoElection = async (client, creator) => {
-  console.log("Initializing the census...");
-  const census = await setupCensus(creator);
-  console.log("CENSUS => ", census);
-
-  console.log("Initializing the election...");
-  const election = await setupElection(census);
-  console.log("ELECTION => ", election);
-
-  console.log("Creating the election in Vocdoni API...");
-  // FIXME: bug when start election has already passed:
-  // addTx newProcess: cannot add process with start block lower than or equal to the current height
-  const electionId = await client.createElection(election)
-  console.log("Election created!");
-  console.log("ELECTION ID => ", electionId);
-  electionCreatedMessage.classList.toggle("hide");
-  electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`
-};
+import { isWalletInstalled } from "../wallet"
+import SetupVocdoniElection from "../election"
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Ready to start the Proof of Concept. DOMContentLoaded event.");
+  const signinMetamaskButton = document.querySelector(".js-signin-metamask-button");
+  const metaMaskInstalledMessage = document.querySelector(".js-metamask-installed-message");
+  const metaMaskNotInstalledMessage = document.querySelector(".js-metamask-not-installed-message");
+  const metaMaskNoPermissionsMessage = document.querySelector(".js-metamask-no-permissions-message");
 
-  // For election set-up page
-  if (ethereumButton !== null && isWalletInstalled()) {
-    console.log("Set-up form loaded");
-    console.log("Let's show the button");
-    ethereumButton.classList.toggle("hide");
-    ethereumButton.addEventListener("click", () => main())
-  };
+  const createElectionButton = document.querySelector(".js-create-election-button");
+  const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
+  const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
+  const divDemoCensus = document.querySelector(".js-demo-census");
+
+  const LOCAL_STORAGE_ELECTION_ITEM = "vocdoni-demo-election";
+
+  if (isWalletInstalled()) {
+    metaMaskInstalledMessage.classList.toggle("hide");
+  } else {
+    metaMaskNotInstalledMessage.classList.toggle("hide");
+  }
+
+  if (window.localStorage.getItem("vocdoni-demo-election")) {
+    // Election created step
+    const electionId = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_ITEM);
+    console.log("ELECTION ID => ", electionId);
+  } else {
+    // Setup election step
+    if (signinMetamaskButton !== null && isWalletInstalled()) {
+      new SetupVocdoniElection({
+        signinMetamaskButton: signinMetamaskButton,
+        createElectionButton: createElectionButton,
+        electionCreatedMessage: electionCreatedMessage,
+        electionCreatedLink: electionCreatedLink,
+        metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
+        divDemoCensus: divDemoCensus,
+        localStorageElectionItem: LOCAL_STORAGE_ELECTION_ITEM
+      });
+    };
+  }
 });
-
-// TODO: listen for the network change event to reload the page
