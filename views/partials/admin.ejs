@@ -1,0 +1,85 @@
+<div class="process-content">
+  <div class="card">
+    <div class="card-divider">
+      <h2 class="card-title">
+        Add component: Vocdoni
+      </h2>
+    </div>
+
+    <div class="card-section">
+
+      <span class="text-warning">Setup election</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Election created</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Vote period</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Vote period ended</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Tally process</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Calculated results</span>
+      &nbsp;&gt;&nbsp;
+      <span class="text-muted">Results published</span>
+    </div>
+  </div>
+
+  <form class="form step create_election" id="new_setup_" novalidate="novalidate" data-abide="true" data-live-validate="true" data-validate-on-blur="true" action="#" accept-charset="UTF-8" method="post"><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="MeGwyLCBBRdMJxXV6UYmG231YFXkhy7a1cevJPg56MnGCWqJC2O2ot-PS9oae9LjM61x5gZX1L4RxIuXev795g" autocomplete="off" />
+    <div class="card">
+      <div class="card-divider">
+        <h2 class="card-title">Setup election</h2>
+      </div>
+
+      <div class="card-section">
+
+      <div id="help-panel" class="callout help-text" data-toggler=".hide" data-hide="5q8nlr-hide">
+        <p>For making this work, you'll need the MetaMask browser addon.</p>
+        <ol>
+          <li>Download and install the <a href="https://metamask.io/">MetaMask browser addon</a> for your browser or Operating System. </li>
+          <li>Set up a wallet</li>
+          <li>Once its set up, change the Network to test network. On the Firefox addon, this is done by:</li>
+          <ol class="list-lower-alpha">
+            <li>clicking "Ethereum Mainnet" Networks in the top right</li>
+            <li>clicking on "Show/hide test networks"</li>
+            <li>clicking on "Show test networks" -> "ON"</li>
+          </ol>
+        </ol>
+      </div>
+
+        <ul class="no-bullet-indented">
+          <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election has <strong>at least 1 question</strong>.</li>
+          <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;Each question has <strong>at least 2 answers</strong>.</li>
+          <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election is <strong>published</strong>.</li>
+          <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election component is <strong>published</strong>.</li>
+
+
+          <li class="js-metamask-not-installed-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask addon <strong>isn't installed</strong>.</li>
+          <li class="js-metamask-no-permissions-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask account <strong>doesn't have permissions</strong>. Please log-in on MetaMask, sign in in this page, refresh, and start again.</li>
+          <li class="js-metamask-installed-message hide"><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The MetaMask addon is <strong>installed</strong>.</li>
+        </ul>
+
+        <div class="hide js-demo-census">
+          <h2 class="h4">Census</h2>
+          <p>This is the census for voting. Each line (with 12 words) is the passphrase that the voter will need to enter to vote.</p>
+          <textarea rows="10" spellcheck="false"></textarea>
+        </div>
+
+        <div class="hide callout success js-vocdoni-election-created">
+          <h2 class="h4">The election was successfully created</h2>
+          <p>You can watch it out at the <a class="js-vocdoni-election-created-link" href="#" target="_blank">Vocdoni Explorer</a>.</p>
+          <p>Now you can go to the <a href="/voter.html">Voter booth</a>.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <input autocomplete="off" type="hidden" name="setup[current_step]" id="setup_current_step" />
+
+    <div class="button--double form-general-submit">
+      <button disabled="true" class="button js-signin-metamask-button">Sign in with MetaMask</button>
+      <button class="hide button js-create-election-button">Create election in Vocdoni API</button>
+    </div>
+  </form>
+</div>
+
+<script src="./js/vocdoni_admin-bundle.js"></script>

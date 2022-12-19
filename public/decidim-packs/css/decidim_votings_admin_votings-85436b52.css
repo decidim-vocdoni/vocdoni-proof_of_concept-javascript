@@ -1,0 +1,33 @@
+.ballot-style__question--checked {
+  color: green;
+}
+
+.ballot-style__question--unchecked {
+  color: red;
+}
+
+.ballot-style__question-header {
+  max-width: 100px;
+  display: table-cell;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.polling_station_closure_certificate_results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+@media only screen and (max-width: 900px) {
+  .polling_station_closure_certificate_results {
+    grid-template-columns: 1fr;
+  }
+}
+
+.result.not_answer td:first-child {
+  font-style: italic;
+}
+
+/*# sourceMappingURL=decidim_votings_admin_votings-85436b52.css.map*/
