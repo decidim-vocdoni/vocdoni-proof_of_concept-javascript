@@ -21,6 +21,7 @@ const COMPONENT_ID = 22;
  * @property {object} options.electionCreatedMessage The Element with the "Election created in the Voconi API" text
  * @property {object} options.electionCreatedLink The Element where we'll add the Vocdoni Explorer link
  * @property {object} options.divDemoCensus The Element with the textarea where we'll add the Demo census
+ * @property {object} options.electionCreateErrorMessage The Element with the "Fix the election configuration" text
  * @property {string} options.localStorageElectionItem The string with the key where we'll save the electionId in the LocalStorage API
  *
  * @see {@link https://developer.vocdoni.io|Documentation}
@@ -35,6 +36,7 @@ export default class SetupVocdoniElection {
     this.electionCreatedMessage = options.electionCreatedMessage;
     this.electionCreatedLink = options.electionCreatedLink;
     this.divDemoCensus = options.divDemoCensus;
+    this.electionCreateErrorMessage = options.electionCreateErrorMessage;
     this.localStorageElectionItem = options.localStorageElectionItem;
     this.creator = null;
     this.client = null;
@@ -99,14 +101,16 @@ export default class SetupVocdoniElection {
     const election = await this._initializeElection(census);
     console.log("ELECTION => ", election);
 
-    // FIXME: bug when start election has already passed:
-    // addTx newProcess: cannot add process with start block lower than or equal to the current height
-    const electionId = await this.client.createElection(election)
-    console.log("ELECTION ID => ", electionId);
+    try {
+      const electionId = await this.client.createElection(election);
+      console.log("ELECTION ID => ", electionId);
 
-    this.electionCreatedMessage.classList.toggle("hide");
-    this.electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`
-    window.localStorage.setItem(this.localStorageElectionItem, electionId);
+      this.electionCreatedMessage.classList.toggle("hide");
+      this.electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
+      window.localStorage.setItem(this.localStorageElectionItem, electionId);
+    } catch (error) {
+      this.electionCreateErrorMessage.classList.remove("hide");
+    }
   }
 
   /* Sets up the census. This is only for demo purposes.

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
   const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
   const divDemoCensus = document.querySelector(".js-demo-census");
+  const electionCreateErrorMessage = document.querySelector(".js-election-create-error-message");
 
   const LOCAL_STORAGE_ELECTION_ITEM = "vocdoni-demo-election";
 
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         electionCreatedLink: electionCreatedLink,
         metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
         divDemoCensus: divDemoCensus,
+        electionCreateErrorMessage: electionCreateErrorMessage,
         localStorageElectionItem: LOCAL_STORAGE_ELECTION_ITEM
       });
     };

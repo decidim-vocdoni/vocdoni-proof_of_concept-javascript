@@ -145,7 +145,6 @@
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election is <strong>published</strong>.</li>
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election component is <strong>published</strong>.</li>
 
-
           <li class="js-metamask-not-installed-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask addon <strong>isn't installed</strong>.</li>
           <li class="js-metamask-no-permissions-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask account <strong>doesn't have permissions</strong>. Please log-in on MetaMask, sign in in this page, refresh, and start again.</li>
           <li class="js-metamask-installed-message hide"><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The MetaMask addon is <strong>installed</strong>.</li>
@@ -155,6 +154,11 @@
           <h2 class="h4">Census</h2>
           <p>This is the census for voting. Each line (with 12 words) is the passphrase that the voter will need to enter to vote.</p>
           <textarea rows="10" spellcheck="false"></textarea>
+        </div>
+
+        <div class="hide callout alert js-election-create-error-message">
+          <h2 class="h4">The election has an error and couldn't be created</h2>
+          <p>This could be for the start and end dates of the election. Check the configuration, fix it and retry.</p>
         </div>
 
         <div class="hide callout success js-vocdoni-election-created">
