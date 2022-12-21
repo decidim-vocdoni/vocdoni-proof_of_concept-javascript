@@ -13,7 +13,8 @@ const COMPONENT_ID = 22;
  * Instantiates the Wallet of the creator and the Vocdoni SDK client
  * Based on the TypeScript example provided in the GitHub repository.
  *
- * @param {object} options All the different HTML Elements that interact with setting up an Election
+ * @param {object} options All the different options that interact with setting up an Election.
+ *   They're mostly HTML Elements where we show messages or bind events.
  *
  * @property {object} options.signinMetamaskButton The Element with the "Sign in with MetaMask" text
  * @property {object} options.createElectionButton The Element with the "Create election in the Vocdoni API" text
@@ -54,13 +55,15 @@ export default class SetupVocdoniElection {
     this.signinMetamaskButton.disabled = false;
     this.signinMetamaskButton.addEventListener("click", (event) => {
       event.preventDefault();
-      this._creatorWalletAndClient();
-      this.signinMetamaskButton.classList.toggle("hide");
-      this.createElectionButton.classList.toggle("hide");
+      this.signinMetamaskButton.classList.add("hide");
+      this.createElectionButton.classList.remove("hide");
+
+      this._setCreatorWalletAndClient();
 
       this.createElectionButton.addEventListener("click", (event) => {
         event.preventDefault();
         this.createElectionButton.disabled = true;
+
         this._createDemoElection();
       })
     })
@@ -72,7 +75,7 @@ export default class SetupVocdoniElection {
    *
    * @returns {void}
    */
-  async _creatorWalletAndClient() {
+  async _setCreatorWalletAndClient() {
     this.creator = await getWallet(this.metaMaskNoPermissionsMessage, this.signinMetamaskButton);
     console.log("CREATOR => ", this.creator);
 
@@ -105,7 +108,7 @@ export default class SetupVocdoniElection {
       const electionId = await this.client.createElection(election);
       console.log("ELECTION ID => ", electionId);
 
-      this.electionCreatedMessage.classList.toggle("hide");
+      this.electionCreatedMessage.classList.remove("hide");
       this.electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
       window.localStorage.setItem(this.localStorageElectionItem, electionId);
     } catch (error) {
@@ -123,7 +126,7 @@ export default class SetupVocdoniElection {
    */
   async _initializeCensus() {
     const showDemoCensus = () => {
-      this.divDemoCensus.classList.toggle("hide");
+      this.divDemoCensus.classList.remove("hide");
       return this.divDemoCensus.querySelector("textarea");
     }
 
@@ -255,3 +258,4 @@ export default class SetupVocdoniElection {
     });
   }
 }
+
