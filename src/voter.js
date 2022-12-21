@@ -5,6 +5,8 @@ import { EnvironmentInitialitzationOptions, VocdoniSDKClient, Vote } from '@vocd
  * @param {string} electionId
  * @param {string} mnemonicPhrase
  * @param {array} voteValue
+ *
+ * @return {Promise<string>} A Promise of a vote hash
  */
 export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
   const voter = ethers.Wallet.fromMnemonic(mnemonicPhrase);
@@ -16,19 +18,25 @@ export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
 
   console.log('Voting...');
   const vote = new Vote(voteValue);
-  client.submitVote(vote).
-    then((voteHash) => console.log("Vote sent! CONFIRMATION ID => ", voteHash)).
-    catch((error) => {
-      const votingErrorMessage = document.querySelector(".js-voting-error");
-      votingErrorMessage.classList.toggle("hide");
-      votingErrorMessage.querySelector("i").innerHTML = error;
-    });
+  return new Promise((resolve) => {
+    client.submitVote(vote).
+      then((voteHash) => {
+        console.log("Vote sent! CONFIRMATION ID => ", voteHash);
+        resolve(voteHash);
+      }).
+      catch((error) => {
+        const votingErrorMessage = document.querySelector(".js-voting-error");
+        votingErrorMessage.classList.toggle("hide");
+        votingErrorMessage.querySelector("i").innerHTML = error;
+      });
+  });
 }
 
 /*
  * @param {object} accessCodeForm The Element with the access code form for accessing the election
+ * @param {function} onSuccess
  */
-export const validateVoteMnemonicPhrase = (accessCodeForm) => {
+export const validateVoteMnemonicPhrase = (accessCodeForm, onSuccess) => {
   if (accessCodeForm === null) {
     return;
   }
@@ -42,6 +50,7 @@ export const validateVoteMnemonicPhrase = (accessCodeForm) => {
     const accessCodeErrorMessage = accessCodeForm.querySelector(".js-login_access_code_error");
     if (voteMnemonicInput.value.split(" ").length === 12) {
       accessCodeErrorMessage.classList.add("hide");
+      onSuccess(voteMnemonicInput.value);
       $("#identification").foundation("toggle");
       $("#step-0").foundation("toggle");
     } else {
