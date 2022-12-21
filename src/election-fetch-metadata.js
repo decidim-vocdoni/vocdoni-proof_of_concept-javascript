@@ -81,7 +81,13 @@ export default class FetchVocdoniElectionMetadata {
   }
 
   _updateStatus(electionMetadata) {
-    window.localStorage.setItem(this.localStorageElectionStatusItem, electionMetadata.status);
+    const now = new Date().getTime();
+    const startDate = Date.parse(electionMetadata.startDate);
+    const endDate = Date.parse(electionMetadata.endDate);
+    const isVotePeriod = now > startDate && endDate > now;
+    const status = isVotePeriod ? "VOTE_PERIOD" : electionMetadata.status;
+
+    window.localStorage.setItem(this.localStorageElectionStatusItem, status);
   }
 }
 

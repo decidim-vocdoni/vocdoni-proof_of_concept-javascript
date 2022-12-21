@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupElectionStep = () => {
     // Setup election step
-    const setupElectionStepWrapper = document.querySelector("#setup-election-step");
-    const signinMetamaskButton = setupElectionStepWrapper.querySelector(".js-signin-metamask-button");
+    const wrapper = document.querySelector("#setup-election-step");
+    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
     const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
     const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
 
-    setupElectionStepWrapper.classList.remove("hide");
+    wrapper.classList.remove("hide");
 
     if (signinMetamaskButton !== null && isWalletInstalled()) {
       new SetupVocdoniElection({
@@ -48,21 +48,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const electionCreatedStep = () => {
     // Election created step
-    const electionCreatedStepWrapper = document.querySelector("#election-created-step");
-    const signinMetamaskButton = electionCreatedStepWrapper.querySelector(".js-signin-metamask-button");
-    const electionCreatedLink = electionCreatedStepWrapper.querySelector(".js-vocdoni-election-created-link");
-    const electionCreatedMetadataDiv = electionCreatedStepWrapper.querySelector(".js-election-created-metadata");
+    const wrapper = document.querySelector("#election-created-step");
+    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
+    const electionLink = wrapper.querySelector(".js-vocdoni-election-created-link");
+    const electionMetadataDiv = wrapper.querySelector(".js-election-metadata");
     const electionId = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_ID_ITEM);
 
-    electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
+    electionLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
     console.log("ELECTION ID => ", electionId);
 
-    electionCreatedStepWrapper.classList.remove("hide");
+    wrapper.classList.remove("hide");
+
     new FetchVocdoniElectionMetadata({
       electionId: electionId,
       signinMetamaskButton: signinMetamaskButton,
       metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
-      electionCreatedMetadataDiv: electionCreatedMetadataDiv,
+      electionMetadataDiv: electionMetadataDiv,
+      localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
+    });
+  }
+
+  const votePeriodStep = () => {
+    // Vote period step
+    const wrapper = document.querySelector("#vote-period-step");
+    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
+    const electionLink = wrapper.querySelector(".js-vocdoni-election-created-link");
+    const electionMetadataDiv = wrapper.querySelector(".js-election-metadata");
+    const electionId = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_ID_ITEM);
+
+    electionLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
+    console.log("ELECTION ID => ", electionId);
+
+    wrapper.classList.remove("hide");
+
+    new FetchVocdoniElectionMetadata({
+      electionId: electionId,
+      signinMetamaskButton: signinMetamaskButton,
+      metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
+      electionMetadataDiv: electionMetadataDiv,
       localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
     });
   }
@@ -70,6 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
   switch (electionStatus) {
     case "READY":
       electionCreatedStep();
+      break;
+    case "VOTE_PERIOD":
+      votePeriodStep();
       break;
     default:
       setupElectionStep();
