@@ -4,9 +4,10 @@
   "description": "A Proof of Concept of using the Vocdoni SDK in a (purish) JavaScript project.",
   "main": "index.js",
   "scripts": {
+    "build": "concurrently \"npm:build-admin-html\" \"npm:build-voter-html\" \"npm:build-admin-js\" \"npm:build-voter-js\"",
     "build-admin-html": "ejs views/pages/admin.ejs --output-file public/admin.html",
-    "build-voter-html": "ejs views/pages/voter.ejs --output-file public/voter.html",
     "build-admin-js": "browserify -p esmify ./src/entrypoints/vocdoni_admin.js -o ./public/js/vocdoni_admin-bundle.js",
+    "build-voter-html": "ejs views/pages/voter.ejs --output-file public/voter.html",
     "build-voter-js": "browserify -p esmify ./src/entrypoints/vocdoni_voter.js -o ./public/js/vocdoni_voter-bundle.js",
     "lint": "eslint ./src/",
     "start": "concurrently \"npm:start-demo-app\" \"npm:start-demo-graphql\" \"npm:watch-admin-js\" \"npm:watch-voter-js\"",
