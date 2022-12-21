@@ -23,7 +23,8 @@ const COMPONENT_ID = 22;
  * @property {object} options.electionCreatedLink The Element where we'll add the Vocdoni Explorer link
  * @property {object} options.divDemoCensus The Element with the textarea where we'll add the Demo census
  * @property {object} options.electionCreateErrorMessage The Element with the "Fix the election configuration" text
- * @property {string} options.localStorageElectionItem The string with the key where we'll save the electionId in the LocalStorage API
+ * @property {string} options.localStorageElectionIdItem The string with the key where we'll save the electionId in the LocalStorage API. Used for demo purposes only.
+ * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  *
  * @see {@link https://developer.vocdoni.io|Documentation}
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
@@ -38,7 +39,8 @@ export default class SetupVocdoniElection {
     this.electionCreatedLink = options.electionCreatedLink;
     this.divDemoCensus = options.divDemoCensus;
     this.electionCreateErrorMessage = options.electionCreateErrorMessage;
-    this.localStorageElectionItem = options.localStorageElectionItem;
+    this.localStorageElectionIdItem = options.localStorageElectionIdItem;
+    this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
     this.creator = null;
     this.client = null;
 
@@ -110,7 +112,8 @@ export default class SetupVocdoniElection {
 
       this.electionCreatedMessage.classList.remove("hide");
       this.electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
-      window.localStorage.setItem(this.localStorageElectionItem, electionId);
+      window.localStorage.setItem(this.localStorageElectionIdItem, electionId);
+      window.localStorage.setItem(this.localStorageElectionStatusItem, "READY");
     } catch (error) {
       this.electionCreateErrorMessage.classList.remove("hide");
     }

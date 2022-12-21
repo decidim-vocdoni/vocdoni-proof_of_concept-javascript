@@ -3,12 +3,13 @@ import { getWallet } from "./wallet"
 
 /*
  *
- * @param {object} options 
+ * @param {object} options
  *
  * @property (string) options.electionId The election ID from Vocdoni API of which we'll fetch the metadata
  * @property (string) options.electionCreatedMetadataDiv The Element to add the election metadata
  * @property {object} options.signinMetamaskButton The Element with the "Sign in with MetaMask" text
  * @property {object} options.metaMaskNoPermissionsMessage The Element with the "You didn't give permissions to MetaMask" text
+ * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  */
 export default class FetchVocdoniElectionMetadata {
   constructor(options = {}) {
@@ -16,6 +17,7 @@ export default class FetchVocdoniElectionMetadata {
     this.signinMetamaskButton = options.signinMetamaskButton;
     this.metaMaskNoPermissionsMessage = options.metaMaskNoPermissionsMessage;
     this.electionCreatedMetadataDiv = options.electionCreatedMetadataDiv;
+    this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
     this.creator = null;
     this.client = null;
 
@@ -29,7 +31,10 @@ export default class FetchVocdoniElectionMetadata {
       this.signinMetamaskButton.classList.toggle("hide");
 
       this._setCreatorWalletAndClient();
-      this._fetchElection();
+      this._fetchElection().then(electionMetadata => {
+        this._showElectionCreatedMetadata(electionMetadata);
+        this._updateStatus(electionMetadata);
+      });
     });
   }
 
@@ -58,15 +63,25 @@ export default class FetchVocdoniElectionMetadata {
 
   _fetchElection() {
     // Add a bit of delay to give time to the client to be set up
-    setTimeout(() => {
+    return new Promise(resolve => {
+      setTimeout(() => {
       this.client.setElectionId(this.electionId)
       this.client.fetchElection()
         .then(data => {
           console.log("ELECTION METADATA => ", data);
-          this.electionCreatedMetadataDiv.parentElement.classList.remove("hide");
-          this.electionCreatedMetadataDiv.textContent = JSON.stringify(data, null, 4);
+          resolve(data);
         });
-    }, 1000);
+    }, 100);
+    });
+  }
+
+  _showElectionCreatedMetadata(electionMetadata) {
+    this.electionCreatedMetadataDiv.parentElement.classList.remove("hide");
+    this.electionCreatedMetadataDiv.textContent = JSON.stringify(electionMetadata, null, 4);
+  }
+
+  _updateStatus(electionMetadata) {
+    window.localStorage.setItem(this.localStorageElectionStatusItem, electionMetadata.status);
   }
 }
 
