@@ -6,7 +6,10 @@ import { EnvironmentInitialitzationOptions, VocdoniSDKClient, Vote } from '@vocd
  * @param {string} mnemonicPhrase
  * @param {array} voteValue
  *
- * @return {Promise<string>} A Promise of a vote hash
+ * @return {Promise<object>} A Promise of an object with two possible reposnses, depending if the
+ *   vote was successfull or not.
+ *   - If it was sucessful, the format will be `{status: "OK", voteHash: voteHash}`
+ *   - If it was a failure, the format will be `{status: "ERROR", message: error}`
  */
 export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
   const voter = ethers.Wallet.fromMnemonic(mnemonicPhrase);
@@ -22,12 +25,10 @@ export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
     client.submitVote(vote).
       then((voteHash) => {
         console.log("Vote sent! CONFIRMATION ID => ", voteHash);
-        resolve(voteHash);
+        resolve({status: "OK", voteHash: voteHash});
       }).
       catch((error) => {
-        const votingErrorMessage = document.querySelector(".js-voting-error");
-        votingErrorMessage.classList.toggle("hide");
-        votingErrorMessage.querySelector("i").innerHTML = error;
+        resolve({status: "ERROR", message: error}); 
       });
   });
 }
@@ -40,8 +41,6 @@ export const validateVoteMnemonicPhrase = (accessCodeForm, onSuccess) => {
   if (accessCodeForm === null) {
     return;
   }
-
-  // const electionIdInput = accessCodeForm.querySelector("input[name=election-id]");
 
   accessCodeForm.addEventListener("submit", (event) => {
     event.preventDefault();

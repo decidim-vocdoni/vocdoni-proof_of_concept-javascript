@@ -67,7 +67,8 @@ $(async () => {
       console.log("Voting finished");
     },
     onInvalid() {
-      console.log("Something went wrong.");
+      $voteWrapper.find("#submitting").addClass("hide");
+      $voteWrapper.find("#vote_fail").removeClass("hide");
     }
   });
 });

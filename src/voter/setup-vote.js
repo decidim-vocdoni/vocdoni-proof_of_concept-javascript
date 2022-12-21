@@ -26,7 +26,12 @@ class VoteComponent {
           console.log(vote);
           this.submit(vote).then((ballot) => {
             console.log(ballot);
-            onFinish();
+
+            if (ballot.status == "OK") {
+              onFinish();
+            } else {
+              onInvalid();
+            }
           });
         },
         () => {
@@ -40,12 +45,10 @@ class VoteComponent {
     console.log("- ELECTION ID => ", this.electionUniqueId);
     console.log("- WALLET => ", this.voterPhrase);
     console.log("- VALUE => ", vote);
-    const voteHash = await submitVote(this.electionUniqueId, this.voterPhrase, vote);
+    const response = await submitVote(this.electionUniqueId, this.voterPhrase, vote);
 
-    return {
-      vote: vote,
-      voteHash: voteHash,
-    };
+    return response;
+
   }
 }
 
