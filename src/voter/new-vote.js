@@ -14,8 +14,14 @@ $(async () => {
   const questionsComponent = new VoteQuestionsComponent($voteWrapper);
   questionsComponent.init();
   $(document).on("on.zf.toggler", () => {
-    // continue and back btn
-    questionsComponent.init();
+    // On some ocassions, when adding the Identification step in the same document,
+    // the $currentStep isn't set correctly
+    //
+    // Adding a slight delay works as a workaround
+    setTimeout(() => {
+      // continue and back btn
+      questionsComponent.init();
+    }, 100);
   });
 
   // Get the vote component and bind it to all UI events

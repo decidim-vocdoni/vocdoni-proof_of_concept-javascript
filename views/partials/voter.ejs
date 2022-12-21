@@ -17,8 +17,69 @@
          data-scheme-name="vocdoni"
          >
 
-         <div id="step-0" class="focus__step "
-                          data-toggler=".hide">
+         <div id="identification" class="focus__step " data-toggler=".hide">
+           <div class="focus__header">
+             <div class="row">
+               <div class="focus__steps">
+                 <strong>
+                   Identification
+                 </strong>
+               </div>
+               <div class="heading5 focus__header-title">
+                 Laboriosam aliquid nostrum aut quia.
+               </div>
+             </div>
+           </div>
+
+           <div class="focus__content evote">
+             <div class="row">
+               <h1 class="heading2">
+                 Identify myself with my voting census data
+               </h1>
+               <div class="evote__content columns large-6">
+                 <div class="evote__grid">
+                   <form class="form" id="new_login" method="post"><input type="hidden" name="authenticity_token" value="kO_-YbFTO9XSEphUr1NkHJ92KUzrjbeMIR5QERXW9zNVoESDigD-rTA7cMhX0ts00VN3xBM9BgQTrpPGttNDeA" autocomplete="off">
+                     <div class="row mt-sm">
+                       <div class="columns medium-centered large-12 medium-12">
+                         <p class="text-center"><strong>Fill the following form to access the voting:</strong></p>
+                         <div class="card">
+                           <div class="card__content">
+                             <div>
+                               <div class="callout alert hide js-login_access_code_error">Check that the wallet mnemonic phrase is correct and send it again.</div>
+                               <label for="login_access_code" class="">Access code<span title="" data-tooltip="true" data-disable-hover="false" data-keep-on-hover="true" class="label-required has-tip" aria-describedby="iq4sbg-tooltip" data-yeti-box="iq4sbg-tooltip" data-toggle="iq4sbg-tooltip" data-resize="iq4sbg-tooltip"><span aria-hidden="true">*</span><span class="show-for-sr">Required field</span></span><input required="required" placeholder="Access code" type="text" name="login[access_code]" id="login_access_code" class=""><span class="form-error" role="alert" id="n2k32h-abide-error">There's an error in this field.</span></label>
+                             </div>
+                             <button type="submit" name="commit" class="button expanded mt-s mb-none">Check my code</button>
+
+                           </div>
+                         </div>
+                       </div>
+                     </div></form>
+                 </div>
+                 <p>
+                 Don't have an access code?
+                 <a href="/votings/dolores-accusantium/check_census" data-accessibility-violation="true">Ask for a new one.</a>
+                 </p>
+               </div>
+             </div>
+           </div>
+
+           <div class="focus__footer">
+             <div class="row">
+
+               <a></a>
+
+
+               <!-- span class="button focus__next disabled-continue disabled">
+                 Next  <svg aria-label="chevron-right" role="img" aria-hidden="true" class="icon--chevron-right icon icon"><title>chevron-right</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-chevron-right"></use></svg>
+               </span>
+
+               <a class="button focus__next enabled-continue" data-toggle="step-1 step-0" href="#">Next  <svg aria-label="chevron-right" role="img" aria-hidden="true" class="icon--chevron-right icon icon"><title>chevron-right</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-chevron-right"></use></svg></a -->
+             </div> </div>
+
+
+         </div>
+
+         <div id="step-0" class="hide focus__step" data-toggler=".hide">
            <div class="focus__header">
              <div class="row">
                <div class="focus__steps">
@@ -40,7 +101,7 @@
 
                <div class="evote__options" data-max-selection="1" data-min-selection="1">
                  <label data-disabled-by="#check-nota" class="evote__check evote__card">
-                   <input type="checkbox" name="question-2" id="question-2" value="answer-3" class="answer_input" />
+                   <input type="radio" name="question-2" id="question-2" value="answer-3" class="answer_input" />
 
                    <span class="evote__check-label">
                      The Beatles
@@ -76,7 +137,7 @@
                  </div>
 
                  <label data-disabled-by="#check-nota" class="evote__check evote__card">
-                   <input type="checkbox" name="question-2" id="question-2" value="answer-4" class="answer_input" />
+                   <input type="radio" name="question-2" id="question-2" value="answer-4" class="answer_input" />
 
                    <span class="evote__check-label">
                      The Rolling Stones
@@ -84,7 +145,7 @@
                  </label>
 
                  <label data-disabled-by="#check-nota" class="evote__check evote__card">
-                   <input type="checkbox" name="question-2" id="question-2" value="answer-5" class="answer_input" />
+                   <input type="radio" name="question-2" id="question-2" value="answer-5" class="answer_input" />
 
                    <span class="evote__check-label">
                      Oasis
@@ -92,7 +153,7 @@
                  </label>
 
                  <label data-disabled-by="#check-nota" class="evote__check evote__card">
-                   <input type="checkbox" name="question-2" id="question-2" value="answer-6" class="answer_input" />
+                   <input type="radio" name="question-2" id="question-2" value="answer-6" class="answer_input" />
 
                    <span class="evote__check-label">
                      Blur
@@ -191,7 +252,7 @@
          <div id="encrypting" class="hide focus__step" data-toggler=".hide">
            <div class="focus__header">
              <div class="row">
-               <div class="focus__steps"><strong>Encrypting the vote</strong></div>
+               <div class="focus__steps"><strong>Submiting the vote to the Vocdoni Blockchain</strong></div>
                <div class="heading5 focus__header-title">
                  Laboriosam aliquid nostrum aut quia.
                </div>
@@ -201,7 +262,7 @@
            <div class="focus__content evote">
              <div class="row">
                <h1 class="heading2">
-                 Encrypting the vote...
+                 Submitting the vote to the Vocdoni Blockchain...
                </h1>
                <div class="evote__encrypting" aria-hidden="true">
                  <div class="evote__dot"></div>
@@ -213,7 +274,7 @@
                  <div class="evote__dot"></div>
                </div>
                <p>
-               Your ballot is being encrypted to ensure the secret of your vote.
+               Your ballot is being submitted.
                </p>
              </div>
            </div>
@@ -234,19 +295,19 @@
            <div class="focus__content evote ballot_decision">
              <div class="row">
                <h1 class="heading2">
-                 Ballot is encrypted: cast it or audit it
+                 Your vote has been sent
                </h1>
 
                <div class="evote__content">
-                 <p>Here, you have the options to cast your ballot so that it&#39;s properly counted or, alternatively, you can audit that your ballot was correctly encrypted. For security reasons, auditing your ballot will spoil it. That means, to cast your vote, you will need to restart the voting process.</p>
+                 <p>You can check your vote using the Vocdoni Explorer portal.</p>
                  <p>
-                 Your ballot identifier is:
+                 Your vote identifier is:
                  <strong class="ballot-hash"></strong>
-                 <a class="audit_ballot">( Audit ballot )</a>
+                 <a class="audit_ballot">( Check my vote )</a>
                  </p>
                </div>
 
-               <button type="submit" name="commit" class="button cast_ballot">Cast ballot to finish your vote</button>
+               <button type="submit" name="commit" class="button cast_ballot">Close the voting booth</button>
 
                <a class="button back hide" href="/processes/est-fugit/f/134/elections/1">
                  Start voting process again

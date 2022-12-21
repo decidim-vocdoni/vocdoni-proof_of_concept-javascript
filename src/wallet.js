@@ -33,8 +33,8 @@ export const getWallet = async (metaMaskNoPermissionsMessage, signinMetamaskButt
       resolve(signer);
     }).catch((exception) => {
       if (exception.code === -32002 || exception.code === 4001) {
-        metaMaskNoPermissionsMessage.classList.toggle("hide");
-        signinMetamaskButton.classList.toggle("hide");
+        metaMaskNoPermissionsMessage.classList.remove("hide");
+        signinMetamaskButton.classList.add("hide");
       } else {
         console.log("No permissions! Invalid exception => ", exception);
       }
