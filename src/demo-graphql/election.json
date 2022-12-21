@@ -58,8 +58,8 @@
             },
             "attachments": [],
             "streamUri": "",
-            "startTime": "2022-12-08T00:00:00+00:00",
-            "endTime": "2022-12-09T00:00:00+00:00",
+            "startTime": "2022-12-21T09:55:00+01:00",
+            "endTime": "2022-12-21T10:30:00+01:00",
             "questions": [
               {
                 "title": {
@@ -132,6 +132,44 @@
                       ]
                     },
                     "value": 1
+                  },
+                  {
+                    "title": {
+                      "translations": [
+                        {
+                          "text": "Oasis",
+                          "locale": "ca"
+                        },
+                        {
+                          "text": "Oasis",
+                          "locale": "en"
+                        },
+                        {
+                          "text": "Oasis",
+                          "locale": "es"
+                        }
+                      ]
+                    },
+                    "value": 2
+                  },
+                  {
+                    "title": {
+                      "translations": [
+                        {
+                          "text": "Blur",
+                          "locale": "ca"
+                        },
+                        {
+                          "text": "Blur",
+                          "locale": "en"
+                        },
+                        {
+                          "text": "Blur",
+                          "locale": "es"
+                        }
+                      ]
+                    },
+                    "value": 3
                   }
                 ]
               }
