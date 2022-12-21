@@ -7,8 +7,6 @@ const { setupVoteComponent } = window.Decidim;
 $(async () => {
   // UI Elements
   const $voteWrapper = $(".vote-wrapper");
-  const $ballotHash = $voteWrapper.find(".ballot-hash");
-  const ballotStyleId = $voteWrapper.data("ballotStyleId");
 
   // Use the questions component
   const questionsComponent = new VoteQuestionsComponent($voteWrapper);
@@ -27,39 +25,29 @@ $(async () => {
   // Get the vote component and bind it to all UI events
   const voteComponent = setupVoteComponent($voteWrapper);
   await voteComponent.bindEvents({
-    onBindEncryptButton(onEventTriggered) {
+    onBindSubmitButton(onEventTriggered) {
       $(".button.confirm").on("click", onEventTriggered);
     },
     onStart() {},
-    onVoteEncryption(validVoteFn) {
-      const getFormData = (formData) => {
-        return formData.serializeArray().reduce((acc, { name, value }) => {
-          if (!acc[name]) {
-            acc[name] = [];
-          }
-          acc[name] = [...acc[name], `${name}_${value}`];
-          return acc;
-        }, {});
-      };
-      const formData = getFormData($voteWrapper.find(".answer_input"));
-      validVoteFn(formData, ballotStyleId);
+    onBallotSubmission(validVoteFn) {
+      const votes = new Array(
+        $voteWrapper.
+        find(".answer_input:checked").
+        attr("value").
+        replace("answer-", "")
+      );
+      validVoteFn(votes);
+      questionsComponent.voteCasted = true;
     },
-    castOrAuditBallot({ encryptedData, encryptedDataHash }) {
-      $voteWrapper.find("#encrypting").addClass("hide");
-      $ballotHash.text(encryptedDataHash);
-      $voteWrapper.find("#ballot_decision").removeClass("hide");
-
-      const $form = $("form.new_vote");
-      $("#vote_encrypted_data", $form).val(encryptedData);
-      $("#vote_encrypted_data_hash", $form).val(encryptedDataHash);
+    onFinish() {
+      $voteWrapper.find("#submitting").addClass("hide");
+      $voteWrapper.find("#vote_sent").removeClass("hide");
     },
-    onBindAuditBallotButton(onEventTriggered) {
-      $(".audit_ballot").on("click", onEventTriggered);
+    onBindVerifyBallotButton(onEventTriggered) {
+      $(".verify_ballot").on("click", onEventTriggered);
     },
-    onBindCastBallotButton(onEventTriggered) {
-      $(".cast_ballot").on("click", onEventTriggered);
-    },
-    onAuditBallot(auditedData, auditedDataFileName) {
+    onVerifyBallot(auditedData, auditedDataFileName) {
+      // TODO
       const vote = JSON.stringify(auditedData);
       const link = document.createElement("a");
       $voteWrapper.find(".button.cast_ballot").addClass("hide");
@@ -72,15 +60,11 @@ $(async () => {
       link.click();
       document.body.removeChild(link);
     },
-    onAuditComplete() {
-      console.log("Audit completed");
+    onVerifyComplete() {
+      console.log("Verify completed");
     },
-    onCastBallot() {
-      questionsComponent.voteCasted = true;
-      $(".cast_ballot").prop("disabled", true);
-    },
-    onCastComplete() {
-      console.log("Cast completed");
+    onClose() {
+      console.log("Voting finished");
     },
     onInvalid() {
       console.log("Something went wrong.");
