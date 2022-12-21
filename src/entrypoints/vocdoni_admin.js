@@ -25,10 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const setupElectionStep = () => {
     // Setup election step
     const setupElectionStepWrapper = document.querySelector("#setup-election-step");
-    setupElectionStepWrapper.classList.remove("hide");
     const signinMetamaskButton = setupElectionStepWrapper.querySelector(".js-signin-metamask-button");
     const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
     const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
+
+    setupElectionStepWrapper.classList.remove("hide");
 
     if (signinMetamaskButton !== null && isWalletInstalled()) {
       new SetupVocdoniElection({

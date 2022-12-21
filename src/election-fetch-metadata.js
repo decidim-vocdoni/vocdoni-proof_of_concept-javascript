@@ -6,7 +6,7 @@ import { getWallet } from "./wallet"
  * @param {object} options
  *
  * @property (string) options.electionId The election ID from Vocdoni API of which we'll fetch the metadata
- * @property (string) options.electionCreatedMetadataDiv The Element to add the election metadata
+ * @property (string) options.electionMetadataDiv The Element to add the election metadata
  * @property {object} options.signinMetamaskButton The Element with the "Sign in with MetaMask" text
  * @property {object} options.metaMaskNoPermissionsMessage The Element with the "You didn't give permissions to MetaMask" text
  * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
@@ -16,7 +16,7 @@ export default class FetchVocdoniElectionMetadata {
     this.electionId = options.electionId;
     this.signinMetamaskButton = options.signinMetamaskButton;
     this.metaMaskNoPermissionsMessage = options.metaMaskNoPermissionsMessage;
-    this.electionCreatedMetadataDiv = options.electionCreatedMetadataDiv;
+    this.electionMetadataDiv = options.electionMetadataDiv;
     this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
     this.creator = null;
     this.client = null;
@@ -32,7 +32,7 @@ export default class FetchVocdoniElectionMetadata {
 
       this._setCreatorWalletAndClient();
       this._fetchElection().then(electionMetadata => {
-        this._showElectionCreatedMetadata(electionMetadata);
+        this._showElectionMetadata(electionMetadata);
         this._updateStatus(electionMetadata);
       });
     });
@@ -75,9 +75,9 @@ export default class FetchVocdoniElectionMetadata {
     });
   }
 
-  _showElectionCreatedMetadata(electionMetadata) {
-    this.electionCreatedMetadataDiv.parentElement.classList.remove("hide");
-    this.electionCreatedMetadataDiv.textContent = JSON.stringify(electionMetadata, null, 4);
+  _showElectionMetadata(electionMetadata) {
+    this.electionMetadataDiv.parentElement.classList.remove("hide");
+    this.electionMetadataDiv.textContent = JSON.stringify(electionMetadata, null, 4);
   }
 
   _updateStatus(electionMetadata) {
