@@ -28,7 +28,7 @@ class VoteComponent {
             console.log(ballot);
 
             if (ballot.status == "OK") {
-              onFinish();
+              onFinish(ballot.voteId);
             } else {
               onInvalid();
             }

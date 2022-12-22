@@ -39,9 +39,11 @@ $(async () => {
       validVoteFn(votes);
       questionsComponent.voteCasted = true;
     },
-    onFinish() {
+    onFinish(voteId) {
       $voteWrapper.find("#submitting").addClass("hide");
       $voteWrapper.find("#vote_sent").removeClass("hide");
+      $voteWrapper.find(".ballot-hash").html(voteId);
+      $voteWrapper.find(".verify_ballot").attr("href", `https://dev.explorer.vote/verify/#/${voteId}`);
     },
     onBindVerifyBallotButton(onEventTriggered) {
       $(".verify_ballot").on("click", onEventTriggered);
