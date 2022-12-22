@@ -18,11 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // get the voteMnemonicPhrase that we're adding afterguards.
   // So, as this is flow need to be reviews and approved, for now
   // we'll take it from our good old friend localStorage
-  const voteMnemonicPhrase = window.localStorage.getItem("vocdoni-demo-voter-phrase");
-  console.log("MNEMONIC PHRASE => ", voteMnemonicPhrase);
-  $voteWrapper.attr("data-voter-phrase", voteMnemonicPhrase);
+  const LOCAL_STORAGE_VOTE_MNEMONIC_PHRASE = "vocdoni-demo-voter-phrase";
+  if (window.localStorage.getItem(LOCAL_STORAGE_VOTE_MNEMONIC_PHRASE)) {
+    const voteMnemonicPhrase = window.localStorage.getItem(LOCAL_STORAGE_VOTE_MNEMONIC_PHRASE);
+    console.log("MNEMONIC PHRASE => ", voteMnemonicPhrase);
+    $voteWrapper.attr("data-voter-phrase", voteMnemonicPhrase);
+  } else {
+    console.log("We don't have any Mnemonic phrase saved.");
+    console.log("You need to save it and refresh this page.");
+  }
 
   validateVoteMnemonicPhrase(accessCodeForm, (voteMnemonicPhrase) => {
+      window.localStorage.setItem(LOCAL_STORAGE_VOTE_MNEMONIC_PHRASE, voteMnemonicPhrase);
     // console.log("MNEMONIC PHRASE => ", voteMnemonicPhrase);
     // $voteWrapper.attr("data-voter-phrase", voteMnemonicPhrase);
   });
