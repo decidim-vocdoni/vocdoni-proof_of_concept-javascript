@@ -14,6 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const LOCAL_STORAGE_ELECTION_ID_ITEM = "vocdoni-demo-election-id";
   const LOCAL_STORAGE_ELECTION_STATUS_ITEM = "vocdoni-demo-election-status";
 
+  document.querySelector(".js-clean-local-storage").addEventListener("click", (event) => {
+    const cleanLocalStorageItems = () => {
+      const items = [ LOCAL_STORAGE_ELECTION_ID_ITEM, LOCAL_STORAGE_ELECTION_STATUS_ITEM ];
+      for (const item of items) {
+        window.localStorage.removeItem(item);
+      }
+    }
+
+    event.preventDefault();
+    cleanLocalStorageItems();
+    window.location.reload();
+  });
+
   if (isWalletInstalled()) {
     metaMaskInstalledMessage.classList.toggle("hide");
   } else {
