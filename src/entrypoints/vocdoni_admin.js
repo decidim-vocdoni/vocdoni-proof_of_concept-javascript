@@ -30,13 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const setupWalletStep = () => {
     // Setup wallet step
     const wrapper = document.querySelector("#setup-wallet-step");
-
+    const createWalletButton = document.querySelector(".js-create-wallet");
     wrapper.classList.remove("hide");
-    document.querySelector(".js-create-wallet").addEventListener("click", (event) => {
+
+    createWalletButton.addEventListener("click", (event) => {
       event.preventDefault();
+      createWalletButton.disabled = true;
       const wallet = createRandomWallet();
       window.localStorage.setItem(LOCAL_STORAGE_ELECTION_STATUS_ITEM, "SETUP_ELECTION");
       window.localStorage.setItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY, wallet.privateKey);
+      document.querySelector(".js-wallet-any-message").classList.add("hide");
       document.querySelector(".js-wallet-created-message").classList.remove("hide");
       document.querySelector(".js-wallet-created-phrase").value = wallet.mnemonicPhrase;
     });
