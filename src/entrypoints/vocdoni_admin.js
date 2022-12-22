@@ -110,6 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
     case "VOTE_PERIOD":
       votePeriodStep();
       break;
+    case "RESULTS":
+      calculatedResultsStep();
+      break;
     default:
       setupWalletStep();
   }
