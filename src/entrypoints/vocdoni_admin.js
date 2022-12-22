@@ -27,12 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const electionStatus = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_STATUS_ITEM);
 
   // Steps logic
-  
   const setupWalletStep = () => {
     // Setup wallet step
     const wrapper = document.querySelector("#setup-wallet-step");
+
     wrapper.classList.remove("hide");
-    
     document.querySelector(".js-create-wallet").addEventListener("click", (event) => {
       event.preventDefault();
       const wallet = createRandomWallet();
@@ -78,8 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     new FetchVocdoniElectionMetadata({
       electionId: electionId,
-      signinMetamaskButton: signinMetamaskButton,
-      metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
       electionMetadataDiv: electionMetadataDiv,
       localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
     });
@@ -108,6 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   switch (electionStatus) {
+    case "SETUP_ELECTION":
+      setupElectionStep();
+      break;
     case "READY":
       electionCreatedStep();
       break;
@@ -115,6 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
       votePeriodStep();
       break;
     default:
-      setupElectionStep();
+      setupWalletStep();
   }
 });

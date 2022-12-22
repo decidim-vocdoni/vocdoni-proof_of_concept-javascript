@@ -32,29 +32,11 @@
 
       <div class="card-section">
 
-        <div id="help-panel" class="callout help-text" data-toggler=".hide" data-hide="5q8nlr-hide">
-          <p>For making this work, you'll need the MetaMask browser addon.</p>
-          <ol>
-            <li>Download and install the <a href="https://metamask.io/">MetaMask browser addon</a> for your browser or Operating System. </li>
-            <li>Set up a wallet</li>
-            <li>Once its set up, change the Network to test network. On the Firefox addon, this is done by:</li>
-            <ol class="list-lower-alpha">
-              <li>clicking "Ethereum Mainnet" Networks in the top right</li>
-              <li>clicking on "Show/hide test networks"</li>
-              <li>clicking on "Show test networks" -> "ON"</li>
-            </ol>
-          </ol>
-        </div>
-
         <ul class="no-bullet-indented">
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election has <strong>at least 1 question</strong>.</li>
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;Each question has <strong>at least 2 answers</strong>.</li>
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election is <strong>published</strong>.</li>
           <li><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The election component is <strong>published</strong>.</li>
-
-          <li class="js-metamask-not-installed-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask addon <strong>isn't installed</strong>.</li>
-          <li class="js-metamask-no-permissions-message hide"><svg aria-label="x" role="img" aria-hidden="true" class="icon--x icon text-alert"><title>x</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-x"></use></svg>&nbsp;The MetaMask account <strong>doesn't have permissions</strong>. Please log-in on MetaMask, sign in in this page, refresh, and start again.</li>
-          <li class="js-metamask-installed-message hide"><svg aria-label="check" role="img" aria-hidden="true" class="icon--check icon text-success"><title>check</title><use href="/decidim-packs/media/images/icons-c4fd0f43651700b0c768.svg#icon-check"></use></svg>&nbsp;The MetaMask addon is <strong>installed</strong>.</li>
         </ul>
 
         <div class="hide js-demo-census">
@@ -80,8 +62,7 @@
     <input autocomplete="off" type="hidden" name="setup[current_step]" id="setup_current_step" />
 
     <div class="button--double form-general-submit">
-      <button disabled="true" class="button js-signin-metamask-button">Sign in with MetaMask</button>
-      <button class="hide button js-create-election-button">Create election in Vocdoni API</button>
+      <button class="button js-create-election-button">Create election in Vocdoni API</button>
     </div>
   </form>
 </div>
