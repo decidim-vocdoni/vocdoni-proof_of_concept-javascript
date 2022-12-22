@@ -10,35 +10,28 @@ const TEST_CENSUS = 5;
 const COMPONENT_ID = 22;
 
 /*
+ * Creates an Election in the Vocdoni API 
  * Instantiates the Wallet of the creator and the Vocdoni SDK client
  * Based on the TypeScript example provided in the GitHub repository.
  *
  * @param {object} options All the different options that interact with setting up an Election.
  *   They're mostly HTML Elements where we show messages or bind events.
+ * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
+ * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
  *
  * @property {object} options.walletPrivateKey The private key from the wallet that will create the Election
- * @property {object} options.createElectionButton The Element with the "Create election in the Vocdoni API" text
- * @property {object} options.electionCreatedMessage The Element with the "Election created in the Voconi API" text
- * @property {object} options.electionCreatedLink The Element where we'll add the Vocdoni Explorer link
  * @property {object} options.divDemoCensus The Element with the textarea where we'll add the Demo census
- * @property {object} options.electionCreateErrorMessage The Element with the "Fix the election configuration" text
- * @property {string} options.localStorageElectionIdItem The string with the key where we'll save the electionId in the LocalStorage API. Used for demo purposes only.
- * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  *
  * @see {@link https://developer.vocdoni.io|Documentation}
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
  */
 export default class SetupVocdoniElection {
   // TODO: listen for the network change event to reload the page
-  constructor(options = {}) {
+  constructor(options = {}, onSuccess, onFailure) {
     this.walletPrivateKey = options.walletPrivateKey;
-    this.createElectionButton = options.createElectionButton;
-    this.electionCreatedMessage = options.electionCreatedMessage;
-    this.electionCreatedLink = options.electionCreatedLink;
     this.divDemoCensus = options.divDemoCensus;
-    this.electionCreateErrorMessage = options.electionCreateErrorMessage;
-    this.localStorageElectionIdItem = options.localStorageElectionIdItem;
-    this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
+    this.onSuccess = onSuccess;
+    this.onFailure = onFailure;
     this.creator = null;
     this.client = null;
 
@@ -52,13 +45,7 @@ export default class SetupVocdoniElection {
    */
   run() {
     this._setCreatorWalletAndClient();
-
-    this.createElectionButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      this.createElectionButton.disabled = true;
-
-      this._createDemoElection();
-    })
+    this._createElection();
   }
 
   /*
@@ -68,7 +55,7 @@ export default class SetupVocdoniElection {
    * @returns {void}
    */
   async _setCreatorWalletAndClient() {
-    this.creator = await getWallet(this.walletPrivateKey);
+    this.creator = getWallet(this.walletPrivateKey);
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({
@@ -85,11 +72,10 @@ export default class SetupVocdoniElection {
 
   /*
    * Create the demo election in Vocdoni API.
-   * For the demo purposes, it saves the electionId in localStorage browser
    *
    * @returns {void}
    */
-  async _createDemoElection() {
+  async _createElection() {
     const census = await this._initializeCensus(this.creator);
     console.log("CENSUS => ", census);
 
@@ -100,12 +86,10 @@ export default class SetupVocdoniElection {
       const electionId = await this.client.createElection(election);
       console.log("ELECTION ID => ", electionId);
 
-      this.electionCreatedMessage.classList.remove("hide");
-      this.electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
-      window.localStorage.setItem(this.localStorageElectionIdItem, electionId);
-      window.localStorage.setItem(this.localStorageElectionStatusItem, "READY");
+      this.onSuccess(electionId);
     } catch (error) {
-      this.electionCreateErrorMessage.classList.remove("hide");
+      console.log("ERROR ", error);
+      this.onFailure();
     }
   }
 

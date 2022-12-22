@@ -3,10 +3,6 @@ import SetupVocdoniElection from "../election"
 import FetchVocdoniElectionMetadata from "../election-fetch-metadata"
 
 document.addEventListener("DOMContentLoaded", () => {
-  const createElectionButton = document.querySelector(".js-create-election-button");
-  const divDemoCensus = document.querySelector(".js-demo-census");
-  const electionCreateErrorMessage = document.querySelector(".js-election-create-error-message");
-
   const LOCAL_STORAGE_ELECTION_ID_ITEM = "vocdoni-demo-election-id";
   const LOCAL_STORAGE_ELECTION_STATUS_ITEM = "vocdoni-demo-election-status";
   const LOCAL_STORAGE_WALLET_PRIVATE_KEY = "vocdoni-demo-wallet-private-key";
@@ -47,25 +43,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupElectionStep = () => {
     // Setup election step
+    const onSuccess = (electionId) => {
+      const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
+      const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
+      electionCreatedMessage.classList.remove("hide");
+      electionCreatedLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
+      window.localStorage.setItem(LOCAL_STORAGE_ELECTION_ID_ITEM, electionId);
+      window.localStorage.setItem(LOCAL_STORAGE_ELECTION_STATUS_ITEM, "READY");
+    }
+
+    const onFailure = () => {
+      const electionCreateErrorMessage = document.querySelector(".js-election-create-error-message");
+      electionCreateErrorMessage.classList.remove("hide");
+    }
+
     const wrapper = document.querySelector("#setup-election-step");
-    const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
-    const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
+    const createElectionButton = document.querySelector(".js-create-election-button");
+    const divDemoCensus = document.querySelector(".js-demo-census");
 
     wrapper.classList.remove("hide");
 
-    new SetupVocdoniElection({
-      walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
-      createElectionButton: createElectionButton,
-      electionCreatedMessage: electionCreatedMessage,
-      electionCreatedLink: electionCreatedLink,
-      divDemoCensus: divDemoCensus,
-      electionCreateErrorMessage: electionCreateErrorMessage,
-      localStorageElectionIdItem: LOCAL_STORAGE_ELECTION_ID_ITEM,
-      localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
-    });
+    createElectionButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      createElectionButton.disabled = true;
+
+      new SetupVocdoniElection({
+        walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
+        divDemoCensus: divDemoCensus
+      }, onSuccess, onFailure);
+    })
+
   }
 
-  const fetchElectionHelper = (wrapperSelector, onSucess = null) => {
+  const fetchElectionHelper = (wrapperSelector, onSuccess = null) => {
     const wrapper = document.querySelector(wrapperSelector);
     const electionLink = wrapper.querySelector(".js-vocdoni-election-created-link");
     const electionMetadataDiv = wrapper.querySelector(".js-election-metadata");
@@ -77,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.classList.remove("hide");
 
     new FetchVocdoniElectionMetadata({
+      walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
       electionId: electionId,
       electionMetadataDiv: electionMetadataDiv,
       localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
@@ -85,12 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const electionCreatedStep = () => {
     // Election created step
-    fetchElectionHelper("#election-created-step", null);
+    fetchElectionHelper("#election-created-step");
   }
 
   const votePeriodStep = () => {
     // Vote period step
-    fetchElectionHelper("#vote-period-step", null);
+    fetchElectionHelper("#vote-period-step");
   }
 
   const calculatedResultsStep = () => {

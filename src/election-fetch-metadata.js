@@ -25,17 +25,13 @@ export default class FetchVocdoniElectionMetadata {
   }
 
   run() {
-    this.signinMetamaskButton.disabled = false;
-    this.signinMetamaskButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      this.signinMetamaskButton.classList.toggle("hide");
-
-      this._setCreatorWalletAndClient();
-      this._fetchElection().then(electionMetadata => {
-        this._showElectionMetadata(electionMetadata);
-        this._updateStatus(electionMetadata);
+    this._setCreatorWalletAndClient();
+    this._fetchElection().then(electionMetadata => {
+      this._showElectionMetadata(electionMetadata);
+      this._updateStatus(electionMetadata);
+      if (typeof this.onSuccess === "function") {
         this.onSuccess(electionMetadata);
-      });
+      }
     });
   }
 
@@ -46,7 +42,7 @@ export default class FetchVocdoniElectionMetadata {
    * @returns {void}
    */
   async _setCreatorWalletAndClient() {
-    this.creator = await getWallet(this.walletPrivateKey);
+    this.creator = getWallet(this.walletPrivateKey);
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({
@@ -71,13 +67,13 @@ export default class FetchVocdoniElectionMetadata {
     // Add a bit of delay to give time to the client to be set up
     return new Promise(resolve => {
       setTimeout(() => {
-      this.client.setElectionId(this.electionId)
-      this.client.fetchElection()
-        .then(data => {
-          console.log("ELECTION METADATA => ", data);
-          resolve(data);
-        });
-    }, 100);
+        this.client.setElectionId(this.electionId)
+        this.client.fetchElection()
+          .then(data => {
+            console.log("ELECTION METADATA => ", data);
+            resolve(data);
+          });
+      }, 100);
     });
   }
 
