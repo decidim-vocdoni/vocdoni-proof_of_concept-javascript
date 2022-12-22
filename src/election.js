@@ -16,9 +16,8 @@ const COMPONENT_ID = 22;
  * @param {object} options All the different options that interact with setting up an Election.
  *   They're mostly HTML Elements where we show messages or bind events.
  *
- * @property {object} options.signinMetamaskButton The Element with the "Sign in with MetaMask" text
+ * @property {object} options.walletPrivateKey The private key from the wallet that will create the Election
  * @property {object} options.createElectionButton The Element with the "Create election in the Vocdoni API" text
- * @property {object} options.metaMaskNoPermissionsMessage The Element with the "You didn't give permissions to MetaMask" text
  * @property {object} options.electionCreatedMessage The Element with the "Election created in the Voconi API" text
  * @property {object} options.electionCreatedLink The Element where we'll add the Vocdoni Explorer link
  * @property {object} options.divDemoCensus The Element with the textarea where we'll add the Demo census
@@ -32,9 +31,8 @@ const COMPONENT_ID = 22;
 export default class SetupVocdoniElection {
   // TODO: listen for the network change event to reload the page
   constructor(options = {}) {
-    this.signinMetamaskButton = options.signinMetamaskButton;
+    this.walletPrivateKey = options.walletPrivateKey;
     this.createElectionButton = options.createElectionButton;
-    this.metaMaskNoPermissionsMessage = options.metaMaskNoPermissionsMessage;
     this.electionCreatedMessage = options.electionCreatedMessage;
     this.electionCreatedLink = options.electionCreatedLink;
     this.divDemoCensus = options.divDemoCensus;
@@ -48,26 +46,18 @@ export default class SetupVocdoniElection {
   }
 
   /*
-   * Listens to the "Sign in with MetaMask" and "Create election in Vocdoni API" buttons
-   * and runs the methods when they're clicked, changing the visiblity of the buttons.
+   * Listens to the "Create election in Vocdoni API" button and runs the methods when they're clicked.
    *
    * @returns {void}
    */
   run() {
-    this.signinMetamaskButton.disabled = false;
-    this.signinMetamaskButton.addEventListener("click", (event) => {
+    this._setCreatorWalletAndClient();
+
+    this.createElectionButton.addEventListener("click", (event) => {
       event.preventDefault();
-      this.signinMetamaskButton.classList.add("hide");
-      this.createElectionButton.classList.remove("hide");
+      this.createElectionButton.disabled = true;
 
-      this._setCreatorWalletAndClient();
-
-      this.createElectionButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        this.createElectionButton.disabled = true;
-
-        this._createDemoElection();
-      })
+      this._createDemoElection();
     })
   }
 
@@ -78,7 +68,7 @@ export default class SetupVocdoniElection {
    * @returns {void}
    */
   async _setCreatorWalletAndClient() {
-    this.creator = await getWallet(this.metaMaskNoPermissionsMessage, this.signinMetamaskButton);
+    this.creator = await getWallet(this.walletPrivateKey);
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({

@@ -1,18 +1,15 @@
-import { isWalletInstalled } from "../wallet"
+import { createRandomWallet } from "../wallet"
 import SetupVocdoniElection from "../election"
 import FetchVocdoniElectionMetadata from "../election-fetch-metadata"
 
 document.addEventListener("DOMContentLoaded", () => {
-  const metaMaskInstalledMessage = document.querySelector(".js-metamask-installed-message");
-  const metaMaskNotInstalledMessage = document.querySelector(".js-metamask-not-installed-message");
-  const metaMaskNoPermissionsMessage = document.querySelector(".js-metamask-no-permissions-message");
-
   const createElectionButton = document.querySelector(".js-create-election-button");
   const divDemoCensus = document.querySelector(".js-demo-census");
   const electionCreateErrorMessage = document.querySelector(".js-election-create-error-message");
 
   const LOCAL_STORAGE_ELECTION_ID_ITEM = "vocdoni-demo-election-id";
   const LOCAL_STORAGE_ELECTION_STATUS_ITEM = "vocdoni-demo-election-status";
+  const LOCAL_STORAGE_WALLET_PRIVATE_KEY = "vocdoni-demo-wallet-private-key";
 
   document.querySelector(".js-clean-local-storage").addEventListener("click", (event) => {
     const cleanLocalStorageItems = () => {
@@ -27,36 +24,43 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.reload();
   });
 
-  if (isWalletInstalled()) {
-    metaMaskInstalledMessage.classList.toggle("hide");
-  } else {
-    metaMaskNotInstalledMessage.classList.toggle("hide");
-  }
-
   const electionStatus = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_STATUS_ITEM);
+
+  // Steps logic
+  
+  const setupWalletStep = () => {
+    // Setup wallet step
+    const wrapper = document.querySelector("#setup-wallet-step");
+    wrapper.classList.remove("hide");
+    
+    document.querySelector(".js-create-wallet").addEventListener("click", (event) => {
+      event.preventDefault();
+      const wallet = createRandomWallet();
+      window.localStorage.setItem(LOCAL_STORAGE_ELECTION_STATUS_ITEM, "SETUP_ELECTION");
+      window.localStorage.setItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY, wallet.privateKey);
+      document.querySelector(".js-wallet-created-message").classList.remove("hide");
+      document.querySelector(".js-wallet-created-phrase").value = wallet.mnemonicPhrase;
+    });
+  }
 
   const setupElectionStep = () => {
     // Setup election step
     const wrapper = document.querySelector("#setup-election-step");
-    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
     const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
     const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
 
     wrapper.classList.remove("hide");
 
-    if (signinMetamaskButton !== null && isWalletInstalled()) {
-      new SetupVocdoniElection({
-        signinMetamaskButton: signinMetamaskButton,
-        createElectionButton: createElectionButton,
-        electionCreatedMessage: electionCreatedMessage,
-        electionCreatedLink: electionCreatedLink,
-        metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
-        divDemoCensus: divDemoCensus,
-        electionCreateErrorMessage: electionCreateErrorMessage,
-        localStorageElectionIdItem: LOCAL_STORAGE_ELECTION_ID_ITEM,
-        localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
-      });
-    };
+    new SetupVocdoniElection({
+      walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
+      createElectionButton: createElectionButton,
+      electionCreatedMessage: electionCreatedMessage,
+      electionCreatedLink: electionCreatedLink,
+      divDemoCensus: divDemoCensus,
+      electionCreateErrorMessage: electionCreateErrorMessage,
+      localStorageElectionIdItem: LOCAL_STORAGE_ELECTION_ID_ITEM,
+      localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
+    });
   }
 
   const electionCreatedStep = () => {

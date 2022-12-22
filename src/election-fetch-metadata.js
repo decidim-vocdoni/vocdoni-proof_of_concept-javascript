@@ -5,17 +5,15 @@ import { getWallet } from "./wallet"
  *
  * @param {object} options
  *
+ * @property {object} options.walletPrivateKey The private key from the wallet that will fetch the Election metadata
  * @property (string) options.electionId The election ID from Vocdoni API of which we'll fetch the metadata
  * @property (string) options.electionMetadataDiv The Element to add the election metadata
- * @property {object} options.signinMetamaskButton The Element with the "Sign in with MetaMask" text
- * @property {object} options.metaMaskNoPermissionsMessage The Element with the "You didn't give permissions to MetaMask" text
  * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  */
 export default class FetchVocdoniElectionMetadata {
   constructor(options = {}) {
+    this.walletPrivateKey = options.walletPrivateKey;
     this.electionId = options.electionId;
-    this.signinMetamaskButton = options.signinMetamaskButton;
-    this.metaMaskNoPermissionsMessage = options.metaMaskNoPermissionsMessage;
     this.electionMetadataDiv = options.electionMetadataDiv;
     this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
     this.creator = null;
@@ -45,7 +43,7 @@ export default class FetchVocdoniElectionMetadata {
    * @returns {void}
    */
   async _setCreatorWalletAndClient() {
-    this.creator = await getWallet(this.metaMaskNoPermissionsMessage, this.signinMetamaskButton);
+    this.creator = await getWallet(this.walletPrivateKey);
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({

@@ -1,7 +1,6 @@
 # Vocdoni Proof of Concept on JavaScript
 
 This project is a Demo on how to use the Vocdoni SDK in a simple way, for integrating with Decidim
-For making this work, you'll need the [MetaMask browser addon][metamask-download].
 
 1. Clone this repository
 ```shell
