@@ -104,11 +104,20 @@ export default class FetchVocdoniElectionMetadata {
    * @returns {void}
    */
   _updateStatus(electionMetadata) {
+    // There's a possible bug in the client.fetchElection method, seems like the `electionMetadata.status` is always "READY"
+    // As a workaround, we infer the status with the startDate and endDate.
     const now = new Date().getTime();
     const startDate = Date.parse(electionMetadata.startDate);
     const endDate = Date.parse(electionMetadata.endDate);
-    const isVotePeriod = now > startDate && endDate > now;
-    const status = isVotePeriod ? "VOTE_PERIOD" : electionMetadata.status;
+    let status = "";
+
+    if (now < startDate) {
+      status = "READY"
+    } else if (now > startDate && now < endDate) {
+      status = "VOTE_PERIOD"
+    } else {
+      status = "RESULTS"
+    }
 
     window.localStorage.setItem(this.localStorageElectionStatusItem, status);
   }
