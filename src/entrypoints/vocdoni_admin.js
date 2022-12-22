@@ -62,10 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const electionCreatedStep = () => {
-    // Election created step
-    const wrapper = document.querySelector("#election-created-step");
-    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
+  const fetchElectionHelper = (wrapperSelector, onSucess = null) => {
+    const wrapper = document.querySelector(wrapperSelector);
     const electionLink = wrapper.querySelector(".js-vocdoni-election-created-link");
     const electionMetadataDiv = wrapper.querySelector(".js-election-metadata");
     const electionId = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_ID_ITEM);
@@ -79,29 +77,27 @@ document.addEventListener("DOMContentLoaded", () => {
       electionId: electionId,
       electionMetadataDiv: electionMetadataDiv,
       localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
-    });
+    }, onSuccess);
+  }
+
+  const electionCreatedStep = () => {
+    // Election created step
+    fetchElectionHelper("#election-created-step", null);
   }
 
   const votePeriodStep = () => {
     // Vote period step
-    const wrapper = document.querySelector("#vote-period-step");
-    const signinMetamaskButton = wrapper.querySelector(".js-signin-metamask-button");
-    const electionLink = wrapper.querySelector(".js-vocdoni-election-created-link");
-    const electionMetadataDiv = wrapper.querySelector(".js-election-metadata");
-    const electionId = window.localStorage.getItem(LOCAL_STORAGE_ELECTION_ID_ITEM);
+    fetchElectionHelper("#vote-period-step", null);
+  }
 
-    electionLink.href = `https://dev.explorer.vote/processes/show/#/${electionId}`;
-    console.log("ELECTION ID => ", electionId);
+  const calculatedResultsStep = () => {
+    // Calculated results step
+    const onSuccess = (electionMetadata) => {
+      // js-answer-0
+      console.log("Yeah!", electionMetadata);
+    };
 
-    wrapper.classList.remove("hide");
-
-    new FetchVocdoniElectionMetadata({
-      electionId: electionId,
-      signinMetamaskButton: signinMetamaskButton,
-      metaMaskNoPermissionsMessage: metaMaskNoPermissionsMessage,
-      electionMetadataDiv: electionMetadataDiv,
-      localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
-    });
+    fetchElectionHelper("#calculated-results-step", onSuccess);
   }
 
   switch (electionStatus) {

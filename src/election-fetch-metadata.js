@@ -4,6 +4,7 @@ import { getWallet } from "./wallet"
 /*
  *
  * @param {object} options
+ * @param {function} onSuccess A callback function to be run when the Election metadata is fetch from the API
  *
  * @property {object} options.walletPrivateKey The private key from the wallet that will fetch the Election metadata
  * @property (string) options.electionId The election ID from Vocdoni API of which we'll fetch the metadata
@@ -11,11 +12,12 @@ import { getWallet } from "./wallet"
  * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  */
 export default class FetchVocdoniElectionMetadata {
-  constructor(options = {}) {
+  constructor(options = {}, onSuccess) {
     this.walletPrivateKey = options.walletPrivateKey;
     this.electionId = options.electionId;
     this.electionMetadataDiv = options.electionMetadataDiv;
     this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
+    this.onSuccess = onSuccess;
     this.creator = null;
     this.client = null;
 
@@ -32,6 +34,7 @@ export default class FetchVocdoniElectionMetadata {
       this._fetchElection().then(electionMetadata => {
         this._showElectionMetadata(electionMetadata);
         this._updateStatus(electionMetadata);
+        this.onSuccess(electionMetadata);
       });
     });
   }
