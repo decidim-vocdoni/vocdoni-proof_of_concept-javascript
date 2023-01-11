@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { EnvironmentInitialitzationOptions, VocdoniSDKClient, Election, PlainCensus } from "@vocdoni/sdk"
+import { EnvOptions, VocdoniSDKClient, Election, PlainCensus } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
 
 // How many addresses we'll create for the Demo
@@ -59,7 +59,7 @@ export default class SetupVocdoniElection {
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({
-      env: EnvironmentInitialitzationOptions.DEV,
+      env: EnvOptions.STG,
       wallet: this.creator
     })
     console.log("CLIENT => ", this.client);

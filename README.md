@@ -1,10 +1,10 @@
 # Vocdoni Proof of Concept on JavaScript
 
-This project is a Demo on how to use the Vocdoni SDK in a simple way, for integrating with Decidim
+This project is a Demo on how to use the Vocdoni SDK in a simple way, for integrating with Decidim.
 
 1. Clone this repository
 ```shell
-git clone https://github.com/andreslucena/vocdoni-proof_of_concept-javascript
+git clone https://github.com/decidim-vocdoni/vocdoni-proof_of_concept-javascript
 ```
 2. Install dependencies
 ```shell

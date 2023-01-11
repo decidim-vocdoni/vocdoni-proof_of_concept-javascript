@@ -1,4 +1,4 @@
-import { EnvironmentInitialitzationOptions, VocdoniSDKClient } from "@vocdoni/sdk"
+import { EnvOptions, VocdoniSDKClient } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
 
 /*
@@ -46,7 +46,7 @@ export default class FetchVocdoniElectionMetadata {
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({
-      env: EnvironmentInitialitzationOptions.DEV,
+      env: EnvOptions.STG,
       wallet: this.creator
     })
     console.log("CLIENT => ", this.client);
