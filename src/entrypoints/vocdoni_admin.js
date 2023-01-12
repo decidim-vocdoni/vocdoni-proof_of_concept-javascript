@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+import { PlainCensus } from "@vocdoni/sdk"
 import { createRandomWallet } from "../wallet"
 import SetupVocdoniElection from "../election"
 import FetchVocdoniElectionMetadata from "../election-fetch-metadata"
@@ -41,8 +43,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const setupElectionStep = () => {
+  const setupElectionStep = async () => {
     // Setup election step
+    //
+    const initializeCensus = async (divDemoCensus) => {
+      const showDemoCensus = (divDemoCensus) => {
+        divDemoCensus.classList.remove("hide");
+        return divDemoCensus.querySelector("textarea");
+      }
+
+      const census = new PlainCensus();
+      const textareaDemoCensus = showDemoCensus(divDemoCensus);
+      textareaDemoCensus.rows = TEST_CENSUS;
+      textareaDemoCensus.value = "";
+      for (let i = 1; i < TEST_CENSUS+1; i++) {
+        const wallet = ethers.Wallet.createRandom({locale: "en"});
+        const mnemonic = wallet.mnemonic.phrase;
+        console.log("VOTER ", i, " =>", mnemonic);
+        textareaDemoCensus.value += `${mnemonic}\n`;
+        census.add(await wallet.getAddress());
+      };
+
+      return census;
+    }
+
     const onSuccess = (electionId) => {
       const electionCreatedMessage = document.querySelector(".js-vocdoni-election-created");
       const electionCreatedLink = electionCreatedMessage.querySelector(".js-vocdoni-election-created-link");
@@ -61,7 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const createElectionButton = document.querySelector(".js-create-election-button");
     const divDemoCensus = document.querySelector(".js-demo-census");
 
+    // How many addresses we'll create for the Demo
+    const TEST_CENSUS = 5;
+
     wrapper.classList.remove("hide");
+    const census = await initializeCensus(divDemoCensus);
 
     createElectionButton.addEventListener("click", (event) => {
       event.preventDefault();
@@ -69,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       new SetupVocdoniElection({
         walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
-        divDemoCensus: divDemoCensus
+        census: census
       }, onSuccess, onFailure);
     })
 
@@ -104,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchElectionHelper("#vote-period-step");
   }
 
+  // TODO: Finish
   const calculatedResultsStep = () => {
     // Calculated results step
     const onSuccess = (electionMetadata) => {

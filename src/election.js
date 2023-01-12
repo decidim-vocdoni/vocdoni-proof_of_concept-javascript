@@ -1,9 +1,5 @@
-import { ethers } from "ethers";
-import { EnvOptions, VocdoniSDKClient, Election, PlainCensus } from "@vocdoni/sdk"
+import { EnvOptions, VocdoniSDKClient, Election } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
-
-// How many addresses we'll create for the Demo
-const TEST_CENSUS = 5;
 
 // TODO: change hardcoded componentId
 // When this is integrated in Decidim we should extract this from the URL
@@ -11,16 +7,15 @@ const COMPONENT_ID = 22;
 
 /*
  * Creates an Election in the Vocdoni API 
- * Instantiates the Wallet of the creator and the Vocdoni SDK client
+ * Instantiates the Vocdoni SDK client using the Wallet's private key given as parameter.
  * Based on the TypeScript example provided in the GitHub repository.
  *
  * @param {object} options All the different options that interact with setting up an Election.
- *   They're mostly HTML Elements where we show messages or bind events.
  * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
  * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
  *
- * @property {object} options.walletPrivateKey The private key from the wallet that will create the Election
- * @property {object} options.divDemoCensus The Element with the textarea where we'll add the Demo census
+ * @property {string} options.walletPrivateKey The private key from the wallet that will create the Election
+ * @property {array} options.census An array with all the public keys of the census participants
  *
  * @see {@link https://developer.vocdoni.io|Documentation}
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
@@ -29,10 +24,9 @@ export default class SetupVocdoniElection {
   // TODO: listen for the network change event to reload the page
   constructor(options = {}, onSuccess, onFailure) {
     this.walletPrivateKey = options.walletPrivateKey;
-    this.divDemoCensus = options.divDemoCensus;
+    this.census = options.census;
     this.onSuccess = onSuccess;
     this.onFailure = onFailure;
-    this.creator = null;
     this.client = null;
 
     this.run();
@@ -44,23 +38,23 @@ export default class SetupVocdoniElection {
    * @returns {void}
    */
   run() {
-    this._setCreatorWalletAndClient();
+    this._setVocdoniClient();
     this._createElection();
   }
 
   /*
    * Gets the wallet and initialize the Vocdoni SDK Client with it
-   * Binds the creator and client to the instance
+   * Binds the client to the instance
    *
    * @returns {void}
    */
-  async _setCreatorWalletAndClient() {
-    this.creator = getWallet(this.walletPrivateKey);
-    console.log("CREATOR => ", this.creator);
+  async _setVocdoniClient() {
+    const creator = getWallet(this.walletPrivateKey);
+    console.log("CREATOR => ", creator);
 
     this.client = new VocdoniSDKClient({
       env: EnvOptions.STG,
-      wallet: this.creator
+      wallet: creator
     })
     console.log("CLIENT => ", this.client);
 
@@ -76,10 +70,9 @@ export default class SetupVocdoniElection {
    * @returns {void}
    */
   async _createElection() {
-    const census = await this._initializeCensus(this.creator);
-    console.log("CENSUS => ", census);
+    console.log("CENSUS => ", this.census);
 
-    const election = await this._initializeElection(census);
+    const election = await this._initializeElection();
     console.log("ELECTION => ", election);
 
     try {
@@ -93,36 +86,6 @@ export default class SetupVocdoniElection {
     }
   }
 
-  /* Sets up the census. This is only for demo purposes.
-   * We should study the different kind of Censuses to see which apply to our usecase
-   *
-   * @returns {object} census The Census from Vocdoni SDK with all the participants' wallets
-   *
-   * @see {@link https://github.com/vocdoni/vocdoni-sdk/tree/main/src/types/census|GitHub}
-   * @see {@link https://docs.vocdoni.io/architecture/census/census-overview.html|Documentation}
-   */
-  async _initializeCensus() {
-    const showDemoCensus = () => {
-      this.divDemoCensus.classList.remove("hide");
-      return this.divDemoCensus.querySelector("textarea");
-    }
-
-    const census = new PlainCensus();
-    census.add(await this.creator.getAddress());
-    const textareaDemoCensus = showDemoCensus();
-    textareaDemoCensus.rows = TEST_CENSUS;
-    textareaDemoCensus.value = "";
-    for (let i = 1; i < TEST_CENSUS+1; i++) {
-      const wallet = ethers.Wallet.createRandom({locale: "en"});
-      const mnemonic = wallet.mnemonic.phrase;
-      console.log("VOTER ", i, " =>", mnemonic);
-      textareaDemoCensus.value += `${mnemonic}\n`;
-      census.add(await wallet.getAddress());
-    };
-
-    return census;
-  }
-
   /*
    * Parses the election metadata and instantiates an Election object using Vocdoni SDK
    * This metadata and configuration are fetch with the Decidim GraphQL API using the demo-graphql app
@@ -132,7 +95,7 @@ export default class SetupVocdoniElection {
    *
    * @returns {object} election The election object with the metadata
    */
-  async _initializeElection(census, defaultLocale = "en") {
+  async _initializeElection(defaultLocale = "en") {
 
     /*
      * Transform the locales to the required format with a default locale
@@ -152,6 +115,7 @@ export default class SetupVocdoniElection {
       }, {});
     }
 
+    const census = this.census;
     let electionMetadata = await this._getElectionMetadata(COMPONENT_ID);
     electionMetadata = electionMetadata.data.component.elections.nodes[0];
 
@@ -164,9 +128,9 @@ export default class SetupVocdoniElection {
       startDate: Date.parse(electionMetadata.startTime),
       endDate: Date.parse(electionMetadata.endTime),
       census,
-      electionType: null
     });
 
+    // TODO: add multiple questions support
     // TODO: create description field in the real API
     // TODO: create value field in the real API
     electionMetadata.questions.forEach((question) => {
