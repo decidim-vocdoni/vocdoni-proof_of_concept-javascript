@@ -156,7 +156,7 @@ export default class SetupVocdoniElection {
     electionMetadata = electionMetadata.data.component.elections.nodes[0];
 
     // TODO: get header field from the real API
-    const election = new Election({
+    const election = Election.from({
       title: transformLocales(electionMetadata.title.translations, defaultLocale),
       description: transformLocales(electionMetadata.description.translations, defaultLocale),
       header: "https://source.unsplash.com/random",
