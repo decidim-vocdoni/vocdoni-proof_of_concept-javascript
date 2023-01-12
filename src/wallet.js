@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Wallet } from "@ethersproject/wallet";
 
 /* 
  * Creates a random wallet with ethers.js
@@ -11,7 +11,7 @@ import { ethers } from "ethers";
  *  
  */
 export const createRandomWallet = () => {
-  const wallet = ethers.Wallet.createRandom({locale: "en"})
+  const wallet = Wallet.createRandom({locale: "en"})
   return {
     privateKey: wallet.privateKey,
     mnemonicPhrase: wallet.mnemonic.phrase
@@ -28,6 +28,6 @@ export const createRandomWallet = () => {
  * @returns {object} the Wallet object from ethers.js
  */
 export const getWallet = (privateKey) => {
-  const wallet = new ethers.Wallet(privateKey);
+  const wallet = new Wallet(privateKey);
   return wallet;
 }

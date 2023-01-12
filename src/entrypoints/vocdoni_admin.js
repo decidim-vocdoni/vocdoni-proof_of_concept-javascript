@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Wallet } from "@ethersproject/wallet";
 import { PlainCensus } from "@vocdoni/sdk"
 import { createRandomWallet } from "../wallet"
 import SetupVocdoniElection from "../election"
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       textareaDemoCensus.rows = TEST_CENSUS;
       textareaDemoCensus.value = "";
       for (let i = 1; i < TEST_CENSUS+1; i++) {
-        const wallet = ethers.Wallet.createRandom({locale: "en"});
+        const wallet = Wallet.createRandom({locale: "en"});
         const mnemonic = wallet.mnemonic.phrase;
         console.log("VOTER ", i, " =>", mnemonic);
         textareaDemoCensus.value += `${mnemonic}\n`;
