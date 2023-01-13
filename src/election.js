@@ -132,7 +132,6 @@ export default class SetupVocdoniElection {
 
     // TODO: add multiple questions support
     // TODO: create description field in the real API
-    // TODO: create value field in the real API
     electionMetadata.questions.forEach((question) => {
       election.addQuestion(
         transformLocales(question.title.translations, defaultLocale),
@@ -140,7 +139,7 @@ export default class SetupVocdoniElection {
         question.answers.map((answer) => {
           return {
             title: transformLocales(answer.title.translations, defaultLocale),
-            value: answer.value
+            value: answer.id
           }
         })
       );
