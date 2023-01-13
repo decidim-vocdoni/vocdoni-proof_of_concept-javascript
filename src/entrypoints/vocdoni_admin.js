@@ -3,6 +3,7 @@ import { PlainCensus } from "@vocdoni/sdk"
 import { createRandomWallet } from "../wallet"
 import SetupVocdoniElection from "../election"
 import FetchVocdoniElectionMetadata from "../election-fetch-metadata"
+import { configuration } from "../configuration"
 
 document.addEventListener("DOMContentLoaded", () => {
   const LOCAL_STORAGE_ELECTION_ID_ITEM = "vocdoni-demo-election-id";
@@ -100,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         census: census,
         vocdoni_component_id: 22,
         graphql_api_url: "http://localhost:8081/api",
+        environment: configuration.environment,
       }, onSuccess, onFailure);
     })
 
@@ -120,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
       electionId: electionId,
       electionMetadataDiv: electionMetadataDiv,
+      environment: configuration.environment,
       localStorageElectionStatusItem: LOCAL_STORAGE_ELECTION_STATUS_ITEM
     }, onSuccess);
   }

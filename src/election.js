@@ -1,4 +1,4 @@
-import { EnvOptions, VocdoniSDKClient, Election } from "@vocdoni/sdk"
+import { VocdoniSDKClient, Election } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
 
 /*
@@ -11,6 +11,7 @@ import { getWallet } from "./wallet"
  * @property {array} options.census An array with all the public keys of the census participants
  * @property {string} options.graphql_api_url The URL for the GraphQL API where to extract the Election metadata
  * @property {number|string} options.vocdoni_component_id The ID of the Vocdoni Component in Decidim
+ * @property {string} options.environment The name of the Vocdoni environment that we'll use. Possible values STG or DEV.
  * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
  * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
  *
@@ -18,12 +19,12 @@ import { getWallet } from "./wallet"
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
  */
 export default class SetupVocdoniElection {
-  // TODO: listen for the network change event to reload the page
   constructor(options = {}, onSuccess, onFailure) {
     this.walletPrivateKey = options.walletPrivateKey;
     this.census = options.census;
     this.graphql_api_url = options.graphql_api_url;
     this.vocdoni_component_id = options.vocdoni_component_id;
+    this.environment = options.environment;
     this.onSuccess = onSuccess;
     this.onFailure = onFailure;
     this.client = null;
@@ -52,7 +53,7 @@ export default class SetupVocdoniElection {
     console.log("CREATOR => ", creator);
 
     this.client = new VocdoniSDKClient({
-      env: EnvOptions.STG,
+      env: this.environment,
       wallet: creator
     })
     console.log("CLIENT => ", this.client);

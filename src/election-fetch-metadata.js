@@ -1,4 +1,4 @@
-import { EnvOptions, VocdoniSDKClient } from "@vocdoni/sdk"
+import { VocdoniSDKClient } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
 
 /*
@@ -9,6 +9,7 @@ import { getWallet } from "./wallet"
  * @property {object} options.walletPrivateKey The private key from the wallet that will fetch the Election metadata
  * @property (string) options.electionId The election ID from Vocdoni API of which we'll fetch the metadata
  * @property (string) options.electionMetadataDiv The Element to add the election metadata
+ * @property {string} options.environment The name of the Vocdoni environment that we'll use. Possible values STG or DEV.
  * @property (string) options.localStorageElectionStatusItem The string with the key where we'll save the election status in the LocalStorage API. Used for demo purposes only.
  */
 export default class FetchVocdoniElectionMetadata {
@@ -16,6 +17,7 @@ export default class FetchVocdoniElectionMetadata {
     this.walletPrivateKey = options.walletPrivateKey;
     this.electionId = options.electionId;
     this.electionMetadataDiv = options.electionMetadataDiv;
+    this.environment = options.environment;
     this.localStorageElectionStatusItem = options.localStorageElectionStatusItem;
     this.onSuccess = onSuccess;
     this.creator = null;
@@ -46,7 +48,7 @@ export default class FetchVocdoniElectionMetadata {
     console.log("CREATOR => ", this.creator);
 
     this.client = new VocdoniSDKClient({
-      env: EnvOptions.STG,
+      env: this.environment,
       wallet: this.creator
     })
     console.log("CLIENT => ", this.client);

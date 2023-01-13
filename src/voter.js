@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
-import { EnvOptions, VocdoniSDKClient, Vote } from '@vocdoni/sdk';
+import { VocdoniSDKClient, Vote } from '@vocdoni/sdk';
+import { configuration } from "./configuration"
 
 /*
  * @param {string} electionId
@@ -14,7 +15,7 @@ import { EnvOptions, VocdoniSDKClient, Vote } from '@vocdoni/sdk';
 export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
   const voter = ethers.Wallet.fromMnemonic(mnemonicPhrase);
   const client = new VocdoniSDKClient({
-    env: EnvOptions.STG,
+    env: configuration.environment,
     wallet: voter,
   });
   client.setElectionId(electionId);
