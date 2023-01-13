@@ -131,7 +131,6 @@ export default class SetupVocdoniElection {
     });
 
     // TODO: add multiple questions support
-    // TODO: create description field in the real API
     electionMetadata.questions.forEach((question) => {
       election.addQuestion(
         transformLocales(question.title.translations, defaultLocale),
@@ -172,7 +171,9 @@ export default class SetupVocdoniElection {
               streamUri
               startTime
               endTime
-              questions { title { translations { text locale } }
+              questions {
+                title { translations { text locale } }
+                description { translations { text locale } }
                 answers { title { translations { text locale } } }
               }
             }
