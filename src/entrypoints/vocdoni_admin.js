@@ -1,7 +1,7 @@
 import { Wallet } from "@ethersproject/wallet";
 import { PlainCensus } from "@vocdoni/sdk"
 import { createRandomWallet } from "../wallet"
-import SetupVocdoniElection from "../election"
+import SetupElection from "../setup_election"
 import FetchVocdoniElectionMetadata from "../election-fetch-metadata"
 import { configuration } from "../configuration"
 
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       createElectionButton.disabled = true;
 
-      new SetupVocdoniElection({
+      new SetupElection({
         walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
         census: census,
         vocdoni_component_id: 22,
