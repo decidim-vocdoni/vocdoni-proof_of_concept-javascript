@@ -118,12 +118,12 @@ export default class SetupVocdoniElection {
     const census = this.census;
     let electionMetadata = await this._getElectionMetadata(COMPONENT_ID);
     electionMetadata = electionMetadata.data.component.elections.nodes[0];
+    const header = electionMetadata.attachments[0].url;
 
-    // TODO: get header field from the real API
     const election = Election.from({
       title: transformLocales(electionMetadata.title.translations, defaultLocale),
       description: transformLocales(electionMetadata.description.translations, defaultLocale),
-      header: "https://source.unsplash.com/random",
+      header: header.startsWith("http") ? header : `${window.location.origin}${header}`,
       streamUri: electionMetadata.streamUri,
       startDate: Date.parse(electionMetadata.startTime),
       endDate: Date.parse(electionMetadata.endTime),

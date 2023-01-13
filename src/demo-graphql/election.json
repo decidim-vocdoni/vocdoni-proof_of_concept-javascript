@@ -56,7 +56,13 @@
                 }
               ]
             },
-            "attachments": [],
+            "attachments": [
+              {
+                "thumbnail": "/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZ0FEIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--984857be14e1d107a88ed49d59c1bc290830f710/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RW5KbGMybDZaVjkwYjE5bWFYUmJCekJwQWUwPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--ef2c747d42e7778e009bbb801326db69e886d32d/debian-logo.png",
+                "url": "/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZ0FEIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--984857be14e1d107a88ed49d59c1bc290830f710/debian-logo.png",
+                "type": "png"
+              }
+            ],
             "streamUri": "",
             "startTime": "2022-12-21T09:55:00+01:00",
             "endTime": "2022-12-21T10:30:00+01:00",
