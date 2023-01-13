@@ -1,5 +1,5 @@
-import { VocdoniSDKClient, Election } from "@vocdoni/sdk"
-import { getWallet } from "./wallet"
+import { VocdoniSDKClient, Election } from "@vocdoni/sdk";
+import { Wallet } from "@ethersproject/wallet";
 
 /*
  * Creates an Election in the Vocdoni API 
@@ -49,7 +49,7 @@ export default class SetupElection {
    * @returns {void}
    */
   async _setVocdoniClient() {
-    const creator = getWallet(this.walletPrivateKey);
+    const creator = new Wallet(this.walletPrivateKey);
     console.log("CREATOR => ", creator);
 
     this.client = new VocdoniSDKClient({
