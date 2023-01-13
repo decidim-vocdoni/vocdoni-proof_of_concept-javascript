@@ -1,21 +1,18 @@
 import { EnvOptions, VocdoniSDKClient, Election } from "@vocdoni/sdk"
 import { getWallet } from "./wallet"
 
-// TODO: change hardcoded componentId
-// When this is integrated in Decidim we should extract this from the URL
-const COMPONENT_ID = 22;
-
 /*
  * Creates an Election in the Vocdoni API 
  * Instantiates the Vocdoni SDK client using the Wallet's private key given as parameter.
  * Based on the TypeScript example provided in the GitHub repository.
  *
  * @param {object} options All the different options that interact with setting up an Election.
- * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
- * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
- *
  * @property {string} options.walletPrivateKey The private key from the wallet that will create the Election
  * @property {array} options.census An array with all the public keys of the census participants
+ * @property {string} options.graphql_api_url The URL for the GraphQL API where to extract the Election metadata
+ * @property {number|string} options.vocdoni_component_id The ID of the Vocdoni Component in Decidim
+ * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
+ * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
  *
  * @see {@link https://developer.vocdoni.io|Documentation}
  * @see {@link https://github.com/vocdoni/vocdoni-sdk/blob/ad03822f537fd8c4d43c85d447475fd38b62909c/examples/typescript/src/index.ts|TypeScript example}
@@ -25,6 +22,8 @@ export default class SetupVocdoniElection {
   constructor(options = {}, onSuccess, onFailure) {
     this.walletPrivateKey = options.walletPrivateKey;
     this.census = options.census;
+    this.graphql_api_url = options.graphql_api_url;
+    this.vocdoni_component_id = options.vocdoni_component_id;
     this.onSuccess = onSuccess;
     this.onFailure = onFailure;
     this.client = null;
@@ -116,7 +115,7 @@ export default class SetupVocdoniElection {
     }
 
     const census = this.census;
-    let electionMetadata = await this._getElectionMetadata(COMPONENT_ID);
+    let electionMetadata = await this._getElectionMetadata();
     electionMetadata = electionMetadata.data.component.elections.nodes[0];
     const header = electionMetadata.attachments[0].url;
 
@@ -150,11 +149,9 @@ export default class SetupVocdoniElection {
   /*
    * Gets the election Metadata from the Decidim GraphQL API
    *
-   * @param {number} componentId The component ID of the Vocdoni Election we want to create
-   *
    * @returns {Promise<object>} data The promise of the response in JSON format
    */
-  async _getElectionMetadata(componentId) {
+  async _getElectionMetadata() {
     const query = `{
       component(id: $componentId) {
         id
@@ -183,7 +180,7 @@ export default class SetupVocdoniElection {
     }`
 
     return new Promise((resolve) => {
-      fetch("http://localhost:8081/api", {
+      fetch(this.graphql_api_url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +188,7 @@ export default class SetupVocdoniElection {
         },
         body: JSON.stringify({
           query,
-          variables: { componentId },
+          variables: { this.vocdoni_component_id },
         })
       })
         .then(r => r.json())

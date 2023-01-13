@@ -97,7 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       new SetupVocdoniElection({
         walletPrivateKey: window.localStorage.getItem(LOCAL_STORAGE_WALLET_PRIVATE_KEY),
-        census: census
+        census: census,
+        vocdoni_component_id: 22,
+        graphql_api_url: "http://localhost:8081/api",
       }, onSuccess, onFailure);
     })
 
