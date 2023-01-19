@@ -29,6 +29,13 @@ export default class SetupElection {
     this.onFailure = onFailure;
     this.client = null;
 
+    console.group("Options");
+    console.log("WALLET PRIVATE KEY => ", options.walletPrivateKey);
+    console.log("GRAPHQL API URL => ", options.graphqlApiUrl);
+    console.log("VOCDONI COMPONENT ID => ", options.componentId);
+    console.log("ENVIRONMENT => ", options.environment);
+    console.groupEnd();
+
     this.run();
   }
 
@@ -50,18 +57,20 @@ export default class SetupElection {
    */
   async _setVocdoniClient() {
     const creator = new Wallet(this.walletPrivateKey);
-    console.log("CREATOR => ", creator);
-
     this.client = new VocdoniSDKClient({
       env: this.environment,
       wallet: creator
     })
-    console.log("CLIENT => ", this.client);
 
     const clientInfo = await this.client.createAccount();
     if (clientInfo.balance === 0) {
       this.client.collectFaucetTokens();
     }
+
+    console.group("Client");
+    console.log("CREATOR => ", creator);
+    console.log("CLIENT => ", this.client);
+    console.groupEnd();
   }
 
   /*
@@ -70,20 +79,24 @@ export default class SetupElection {
    * @returns {void}
    */
   async _createElection() {
-    console.log("CENSUS => ", this.census);
 
     const election = await this._initializeElection();
-    console.log("ELECTION => ", election);
+    let result;
 
     try {
       const electionId = await this.client.createElection(election);
-      console.log("ELECTION ID => ", electionId);
-
+      result = `OK! ELECTION ID => ${electionId}`;
       this.onSuccess(electionId);
     } catch (error) {
-      console.log("ERROR ", error);
+      result = `ERROR! ${error}`;
       this.onFailure();
     }
+
+    console.group("Election");
+    console.log("CENSUS => ", this.census);
+    console.log("ELECTION => ", election);
+    console.log("RESULT => ", result);
+    console.groupEnd();
   }
 
   /*
