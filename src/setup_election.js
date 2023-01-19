@@ -151,7 +151,7 @@ export default class SetupElection {
         question.answers.map((answer) => {
           return {
             title: transformLocales(answer.title.translations, defaultLocale),
-            value: answer.id
+            value: parseInt(answer.id)
           }
         })
       );
@@ -166,26 +166,31 @@ export default class SetupElection {
    * @returns {Promise<object>} data The promise of the response in JSON format
    */
   async _getElectionMetadata() {
-    const query = `{
-      component(id: $componentId) {
-        id
-        name { translations { text locale } }
-        ... on VocdoniElections {
+    const query = `
+      query getElectionMetadata($componentId: ID!) {
+        component(id: $componentId) {
+          id
           name { translations { text locale } }
-          elections {
-            nodes {
-              status
-              id
-              title { translations { text locale } }
-              description { translations { text locale } }
-              attachments { thumbnail url type }
-              streamUri
-              startTime
-              endTime
-              questions {
+          ... on VocdoniElections {
+            name { translations { text locale } }
+            elections {
+              nodes {
+                status
+                id
                 title { translations { text locale } }
                 description { translations { text locale } }
-                answers { title { translations { text locale } } }
+                attachments { thumbnail url type }
+                streamUri
+                startTime
+                endTime
+                questions {
+                  title { translations { text locale } }
+                  description { translations { text locale } }
+                  answers {
+                    id
+                    title { translations { text locale } } 
+                  }
+                }
               }
             }
           }
