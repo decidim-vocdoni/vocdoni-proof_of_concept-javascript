@@ -9,8 +9,8 @@ import { Wallet } from "@ethersproject/wallet";
  * @param {object} options All the different options that interact with setting up an Election.
  * @property {string} options.walletPrivateKey The private key from the wallet that will create the Election
  * @property {array} options.census An array with all the public keys of the census participants
- * @property {string} options.graphql_api_url The URL for the GraphQL API where to extract the Election metadata
- * @property {number|string} options.vocdoni_component_id The ID of the Vocdoni Component in Decidim
+ * @property {string} options.graphqlApiUrl The URL for the GraphQL API where to extract the Election metadata
+ * @property {number|string} options.componentId The ID of the Vocdoni Component in Decidim
  * @property {string} options.environment The name of the Vocdoni environment that we'll use. Possible values STG or DEV.
  * @param {function} onSuccess A callback function to be run when the Election is successfully sent to the API
  * @param {function} onFailure A callback function to be run when the Election sent to the API has a failure
@@ -22,8 +22,8 @@ export default class SetupElection {
   constructor(options = {}, onSuccess, onFailure) {
     this.walletPrivateKey = options.walletPrivateKey;
     this.census = options.census;
-    this.graphql_api_url = options.graphql_api_url;
-    this.vocdoni_component_id = options.vocdoni_component_id;
+    this.graphqlApiUrl = options.graphqlApiUrl;
+    this.componentId = options.componentId;
     this.environment = options.environment;
     this.onSuccess = onSuccess;
     this.onFailure = onFailure;
@@ -178,10 +178,11 @@ export default class SetupElection {
           }
         }
       }
-    }`
+    `
+    const componentId = parseInt(this.componentId);
 
     return new Promise((resolve) => {
-      fetch(this.graphql_api_url, {
+      fetch(this.graphqlApiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +190,7 @@ export default class SetupElection {
         },
         body: JSON.stringify({
           query,
-          variables: { this.vocdoni_component_id },
+          variables: { componentId },
         })
       })
         .then(r => r.json())
@@ -197,4 +198,3 @@ export default class SetupElection {
     });
   }
 }
-
