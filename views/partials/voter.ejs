@@ -20,9 +20,9 @@
 
 
     <div class="vote-wrapper"
-         data-election-unique-id=""
-         data-voter-phrase=""
+         data-election-unique-id="0xc5d2460186f76444a3c95f5592dc921922a6f9290c70487000ad020000000000"
          data-scheme-name="vocdoni"
+         data-preview="false"
          >
 
          <div id="identification" class="focus__step " data-toggler=".hide">
@@ -53,11 +53,28 @@
                          <div class="card">
                            <div class="card__content">
                              <div>
-                               <div class="callout alert hide js-login_access_code_error">Check that the wallet mnemonic phrase is correct and send it again.</div>
-                               <label for="login_access_code" class="">Access code<span title="" data-tooltip="true" data-disable-hover="false" data-keep-on-hover="true" class="label-required has-tip" aria-describedby="iq4sbg-tooltip" data-yeti-box="iq4sbg-tooltip" data-toggle="iq4sbg-tooltip" data-resize="iq4sbg-tooltip"><span aria-hidden="true">*</span><span class="show-for-sr">Required field</span></span><input required="required" placeholder="Access code" type="text" name="login[access_code]" id="login_access_code" class=""><span class="form-error" role="alert" id="n2k32h-abide-error">There's an error in this field.</span></label>
+                               <div class="callout alert hide js-login_error">Check that the provided data is correct and try again.</div>
+                             </div>
+                             <div>
+                               <div>
+                                 <label for="login_email">Email<input placeholder="user@example.org" type="text" name="login[email]" id="login_email"></label>
+                               </div>
+                               <fieldset>
+                                 <legend>Date of birth</legend>
+                                 <div class="row">
+                                   <div class="columns small-4">
+                                     <label for="login_day">Day<input placeholder="DD" data-autojump="true" data-max-length="2" data-jump-next="#login_month" type="text" name="login[day]" id="login_day"></label>
+                                   </div>
+                                   <div class="columns small-4">
+                                     <label for="login_month">Month<input placeholder="MM" data-autojump="true" data-max-length="2" data-jump-prev="#login_day" data-jump-next="#login_year" type="text" name="login[month]" id="login_month"></label>
+                                   </div>
+                                   <div class="columns small-4">
+                                     <label for="login_year">Year<input placeholder="YYYY" data-autojump="true" data-max-length="4" data-jump-prev="#login_month" type="text" name="login[year]" id="login_year"></label>
+                                   </div>
+                                 </div>
+                               </fieldset>
                              </div>
                              <button type="submit" name="commit" class="button expanded mt-s mb-none">Check my code</button>
-
                            </div>
                          </div>
                        </div>

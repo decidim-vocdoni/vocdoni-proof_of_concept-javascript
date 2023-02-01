@@ -1,5 +1,4 @@
-import { ethers } from "ethers";
-import { VocdoniSDKClient, Vote } from '@vocdoni/sdk';
+import { VocdoniSDKClient, Vote } from "@vocdoni/sdk";
 import { configuration } from "./configuration"
 
 /*
@@ -12,15 +11,14 @@ import { configuration } from "./configuration"
  *   - If it was sucessful, the format will be `{status: "OK", voteHash: voteHash}`
  *   - If it was a failure, the format will be `{status: "ERROR", message: error}`
  */
-export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
-  const voter = ethers.Wallet.fromMnemonic(mnemonicPhrase);
+export const submitVote = (electionId, wallet, voteValue) => {
   const client = new VocdoniSDKClient({
     env: configuration.environment,
-    wallet: voter,
+    wallet: wallet
   });
   client.setElectionId(electionId);
 
-  console.log('Voting...');
+  console.log("Voting...");
   const vote = new Vote(voteValue);
   return new Promise((resolve) => {
     client.submitVote(vote).
@@ -29,33 +27,7 @@ export const submitVote = (electionId, mnemonicPhrase, voteValue) => {
         resolve({status: "OK", voteHash: voteHash});
       }).
       catch((error) => {
-        resolve({status: "ERROR", message: error}); 
+        resolve({status: "ERROR", message: error});
       });
   });
 }
-
-/*
- * @param {object} accessCodeForm The Element with the access code form for accessing the election
- * @param {function} onSuccess
- */
-export const validateVoteMnemonicPhrase = (accessCodeForm, onSuccess) => {
-  if (accessCodeForm === null) {
-    return;
-  }
-
-  accessCodeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const voteMnemonicInput = accessCodeForm.querySelector("#login_access_code");
-    const accessCodeErrorMessage = accessCodeForm.querySelector(".js-login_access_code_error");
-    if (voteMnemonicInput.value.split(" ").length === 12) {
-      accessCodeErrorMessage.classList.add("hide");
-      onSuccess(voteMnemonicInput.value);
-      $("#identification").foundation("toggle");
-      $("#step-0").foundation("toggle");
-    } else {
-      accessCodeErrorMessage.classList.remove("hide");
-    }
-  });
-}
-

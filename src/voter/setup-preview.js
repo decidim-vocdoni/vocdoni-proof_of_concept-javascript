@@ -3,10 +3,9 @@
 // The wait time used to simulate the submission of the vote during the preview
 const FAKE_SUBMISSION_TIME = 1000;
 
-class PreviewVoteComponent {
-  constructor({ electionUniqueId, voterPhrase }) {
+export default class PreviewVoteComponent {
+  constructor({ electionUniqueId}) {
     this.electionUniqueId = electionUniqueId;
-    this.voterPhrase = voterPhrase;
   }
 
   async bindEvents({
@@ -41,7 +40,6 @@ class PreviewVoteComponent {
 
     console.log("Fake submitting a fake preview vote...");
     console.log("- ELECTION ID => ", this.electionUniqueId);
-    console.log("- WALLET => ", this.voterPhrase);
     console.log("- VALUE => ", vote);
 
     return {
@@ -50,17 +48,4 @@ class PreviewVoteComponent {
     };
   }
 }
-
-export default function setupVoteComponent($voteWrapper) {
-  const voterPhrase = $voteWrapper.data("voterPhrase");
-  const electionUniqueId = $voteWrapper.data("electionUniqueId");
-
-  return new PreviewVoteComponent({
-    electionUniqueId,
-    voterPhrase
-  });
-}
-
-window.Decidim = window.Decidim || {};
-window.Decidim.setupVoteComponent = setupVoteComponent;
 

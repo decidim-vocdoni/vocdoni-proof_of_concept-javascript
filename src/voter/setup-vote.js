@@ -2,10 +2,10 @@
 
 import { submitVote } from "../voter"
 
-class VoteComponent {
-  constructor({ electionUniqueId, voterPhrase }) {
+export class VoteComponent {
+  constructor({ electionUniqueId, wallet }) {
     this.electionUniqueId = electionUniqueId;
-    this.voterPhrase = voterPhrase;
+    this.wallet = wallet;
   }
 
   async bindEvents({
@@ -43,24 +43,10 @@ class VoteComponent {
   async submit(vote) {
     console.log("Submiting vote to Vocdoni API with:");
     console.log("- ELECTION ID => ", this.electionUniqueId);
-    console.log("- WALLET => ", this.voterPhrase);
+    console.log("- WALLET => ", this.wallet);
     console.log("- VALUE => ", vote);
-    const response = await submitVote(this.electionUniqueId, this.voterPhrase, vote);
+    const response = await submitVote(this.electionUniqueId, this.wallet, vote);
 
     return response;
-
   }
 }
-
-export default function setupVoteComponent($voteWrapper) {
-  const voterPhrase = $voteWrapper.data("voterPhrase");
-  const electionUniqueId = $voteWrapper.data("electionUniqueId");
-
-  return new VoteComponent({
-    electionUniqueId,
-    voterPhrase
-  });
-}
-
-window.Decidim = window.Decidim || {};
-window.Decidim.setupVoteComponent = setupVoteComponent;
